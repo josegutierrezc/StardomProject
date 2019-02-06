@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3670277-A421-460E-86DE-4B2DBF71E5C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cars.DL</RootNamespace>
+    <AssemblyName>Cars.DL</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CarCategory.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarCategoryReservationDay.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarProvider.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarProvidersCarCategory.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarReservation.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarReservations_Log.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarsModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CarsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarsModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarsModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CarsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CarTransmission.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Client.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmationStatus.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\AgentSalesSummary.cs" />
+    <Compile Include="Extensions\CarReservationExtension.cs" />
+    <Compile Include="Extensions\CarReservationsPerAgent.cs" />
+    <Compile Include="Extensions\ClientExtension.cs" />
+    <Compile Include="Extensions\PaymentExtension.cs" />
+    <Compile Include="Extensions\PaymentsPerPeriodcs.cs" />
+    <Compile Include="Image.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LinkedAgency.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\CarCategoriesManager.cs" />
+    <Compile Include="Managers\CarProvidersManager.cs" />
+    <Compile Include="Managers\CarReservationsManager.cs" />
+    <Compile Include="Managers\ClientsManager.cs" />
+    <Compile Include="Managers\CarReservationPaymentsManager.cs" />
+    <Compile Include="Managers\LinkedAgenciesManager.cs" />
+    <Compile Include="Managers\PaymentConceptsManager.cs" />
+    <Compile Include="Managers\PaymentMethodsManager.cs" />
+    <Compile Include="Managers\PaymentStatusesManager.cs" />
+    <Compile Include="Managers\PriceConfigurationsManager.cs" />
+    <Compile Include="Managers\PrivilegesManager.cs" />
+    <Compile Include="Managers\ProvincesManager.cs" />
+    <Compile Include="Managers\RentCarPlacesManager.cs" />
+    <Compile Include="Managers\ReservationDaysManager.cs" />
+    <Compile Include="Managers\SeasonsManager.cs" />
+    <Compile Include="Managers\TourOperatorsManager.cs" />
+    <Compile Include="MyCarsModel.cs" />
+    <Compile Include="Payment.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentConcept.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentMethod.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentStatus.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PriceConfiguration.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Privilege.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Province.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentCarPlace.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentMEConfiguration.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReservationDay.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Season.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SeasonDate.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TourOperator.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TourOperatorCarProvider.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TourOperatorsParent.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPrivilege.cs">
+      <DependentUpon>CarsModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="CarsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CarsModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="CarsModel.edmx.diagram">
+      <DependentUpon>CarsModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CarsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CarsModel.edmx</DependentUpon>
+      <LastGenOutput>CarsModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="CarsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CarsModel.edmx</DependentUpon>
+      <LastGenOutput>CarsModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

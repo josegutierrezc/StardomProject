@@ -1,0 +1,76 @@
+﻿@using BookingManager.Web.Models
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Manager | Login</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/Content/animate.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">BM+</h1>
+            </div>
+            <section id="loginForm">
+                @if (Model == null)
+                {
+                    <h3>Bienvenido a Booking Manager</h3>
+                    <p>Todas sus reservas en un solo portal y bajo la misma interfaz.</p>
+                    <br /><br />
+                    using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", role = "form" }))
+                    {
+                        @Html.ValidationMessage("General", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { placeholder = "Nombre de usuario" } })
+                        </div>
+                        <div class="form-group">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                        </div>
+                        <button type="submit" class="btn btn-primary block full-width m-b">Conectarse</button>
+                        <a href="#"><small>Olvido su contraseña?</small></a>
+                    }
+                }
+                else
+                {
+                    <h3>Bienvenido @Model.Fullname</h3>
+                    <p>Usted esta asignado a mas de una Agencia. Por favor seleccione una para continuar.</p>
+                    <br /><br />
+                    using (Html.BeginForm("AgencySelected", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.Fullname)
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            @Html.DropDownListFor(m => m.AgencyNumber, Model.Agencies, new { @class = "form-control full-width" })
+                        </div>
+                        <button type="submit" class="btn btn-primary block full-width m-b">Continuar</button>
+                    }
+                }
+            </section>
+        </div>
+    </div>
+
+</body>
+
+</html>
+

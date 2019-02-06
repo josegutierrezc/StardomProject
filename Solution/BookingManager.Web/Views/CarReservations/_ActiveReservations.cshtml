@@ -1,0 +1,89 @@
+﻿@using BookingManager.Web.Models
+@using Cars.DTO
+@model CarReservationsLogModel
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="footable table table-striped toggle-arrow-tiny footable-loaded phone breakpoint" data-show-toggle="false" data-sorting="true" data-paging="false" data-filtering="false">
+            <thead>
+                <tr>
+                    <th data-breakpoints="xs">Estado</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th data-type="date" data-format-string="DD/MM/YYYY hh:mm a">Recogida</th>
+                    <th data-breakpoints="xs" data-type="date" data-format-string="DD/MM/YYYY">Entrega</th>
+                    <th data-breakpoints="xs" data-type="number">Dias</th>
+                    <th data-breakpoints="xs">Automovil</th>
+                    <th data-breakpoints="xs">Vuelo</th>
+                    <th data-breakpoints="xs sm md" data-type="date" data-format-string="DD/MM/YYYY hh:mm a">Creada</th>
+                    <th data-breakpoints="xs sm md">Por</th>
+                    <th data-breakpoints="xs sm md" data-type="date" data-format-string="DD/MM/YYYY hh:mm a">Modificada</th>
+                    <th data-breakpoints="xs sm md">Por</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i <= Model.ActiveReservations.Count() - 1; i++)
+                {
+                    var confirmedBadged = Model.ActiveReservations[i].CancelledOn != null ? "badge badge-inverse" : Model.ActiveReservations[i].ReservationNumber == null ? "badge badge-danger" : Model.ActiveReservations[i].ReservationNumber.Trim() == string.Empty ? "badge badge-danger" : "badge badge-primary";
+                    var paymentBadged = Model.ActiveReservations[i].PaymentStatusId == 1 ? "badge badge-danger" : Model.ActiveReservations[i].PaymentStatusId == 2 ? "badge badge-warning" : Model.ActiveReservations[i].PaymentStatusId == 3 ? "badge badge-primary" : "badge badge-success";
+                    var modifiedOn = Model.ActiveReservations[i].ModifiedOn == null ? string.Empty : ((DateTime)Model.ActiveReservations[i].ModifiedOn).ToString("dd/MM/yyyy") + " " + ((DateTime)Model.ActiveReservations[i].ModifiedOn).ToString("hh:mm tt");
+                    <tr onclick="window.location = 'CarReservations/Edit?Id=@Model.ActiveReservations[i].Id'">
+                        <td>
+                            <p>
+                                <span class="@confirmedBadged">C</span>
+                                <span class="@paymentBadged">P</span>
+                            </p>
+                        </td>
+                        <td>@Model.ActiveReservations[i].ClientFirstname</td>
+                        <td>@Model.ActiveReservations[i].ClientLastname</td>
+                        <td data-value="@Model.ActiveReservations[i].FromDate.ToString("dd/MM/yyyy") @Model.ActiveReservations[i].FromDate.ToString("hh:mm tt")"></td>
+                        <td data-value="@Model.ActiveReservations[i].ToDate.ToString("dd/MM/yyyy")"></td>
+                        <td>@Model.ActiveReservations[i].Days</td>
+                        <td>@Model.ActiveReservations[i].CarCategoryName</td>
+                        <td>@Model.ActiveReservations[i].FlightNumber</td>
+                        <td data-value="@Model.ActiveReservations[i].CreatedOn.ToString("dd/MM/yyyy") @Model.ActiveReservations[i].CreatedOn.ToString("hh:mm tt")"></td>
+                        <td>@Model.ActiveReservations[i].CreatedByUser</td>
+                        <td data-value="@modifiedOn"></td>
+                        <td>@Model.ActiveReservations[i].ModifiedByUser</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12" style="text-align:center">
+        <div class="btn-group">
+            @{
+                var oneActive = Model.PageSize == 15 ? "active" : string.Empty;
+                var twoActive = Model.PageSize == 25 ? "active" : string.Empty;
+                var threeActive = Model.PageSize == 50 ? "active" : string.Empty;
+                var fourActive = Model.PageSize == 150 ? "active" : string.Empty;
+                <button class="btn btn-white @oneActive" onclick="pageController.onActivePageSizeChanged(15);">15</button>
+                <button class="btn btn-white @twoActive" onclick="pageController.onActivePageSizeChanged(25);">25</button>
+                <button class="btn btn-white @threeActive" onclick="pageController.onActivePageSizeChanged(50);">50</button>
+                <button class="btn btn-white @fourActive" onclick="pageController.onActivePageSizeChanged(150);">150</button>
+            }
+        </div>
+        <div class="btn-group">
+            @Html.HiddenFor(m => m.PageNumber)
+            @Html.HiddenFor(m => m.PageSize)
+            @Html.HiddenFor(m => m.TotalPages)
+            <button type="button" class="btn btn-white" onclick="pageController.onPreviousPageSelected();"><i class="fa fa-chevron-left"></i></button>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                if (i == Model.PageNumber)
+                {
+                    <button class="btn btn-white active" onclick="pageController.onActivePageSelected(@i);">@i</button>
+                }
+                else
+                {
+                    <button class="btn btn-white" onclick="pageController.onActivePageSelected(@i);">@i</button>
+                }
+            }
+            <button type="button" class="btn btn-white" onclick="pageController.onNextPageSelected();"><i class="fa fa-chevron-right"></i> </button>
+        </div>
+    </div>
+    <br /><br /><br />
+</div>

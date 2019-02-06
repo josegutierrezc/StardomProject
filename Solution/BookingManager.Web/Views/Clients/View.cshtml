@@ -1,0 +1,188 @@
+﻿@using BookingManager.Web.Models
+@using BookingManager.Web.Helpers
+@model ClientViewModel
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var trouble = Model.Troubled ? "PROBLEMATICO" : "";
+    var troubleColor = Model.Troubled ? "text-danger" : "text-success";
+    var phone = Model.Phone == string.Empty ? "No tiene teléfono registrado" : ApplicationHelper.Instance.FormatPhoneNumber(Model.Phone, false).Value;
+    var email = Model.Email == string.Empty ? "No tiene email registrado" : Model.Email;
+}
+
+<!-- Modal -->
+<div class="modal fade" id="troubledConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalLongTitle">Confirmación</h3>
+            </div>
+            <div class="modal-body">
+                Que pena, al parecer no pasaste un buen rato con este cliente ... quieres pensarlo nuevamente? Estas seguro/segura
+                de que quieres definirlo de esta manera?
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" onclick="pageController.markClientAsTroubled(@Model.Id, true)">Si</a>
+                <a class="btn btn-primary" data-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-md-10">
+        <h2>
+            Ficha de cliente
+        </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">Tablero</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Clients")">Clientes</a>
+            </li>
+            <li class="active">
+                <strong>Este Cliente</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-default" href="@Model.ReturnUrl" style="margin-top:28px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
+    </div>
+</div>
+
+<br />
+<div class="row animated fadeInRight">
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Detalles</h5>
+            </div>
+            <div>
+                <div class="ibox-content no-padding border-left-right" style="text-align:center;">
+                    <span>
+                        <img alt="user-logo" class="img-responsive" src="~/Images/client-profile.jpg" />
+                    </span>
+                </div>
+                <div class="ibox-content profile-content">
+                    <h2><strong class="@troubleColor">@Model.FirstName @Model.LastName &nbsp;&nbsp;</strong><small class="@troubleColor">@trouble</small></h2>
+                    <p>
+                        <i class="fa fa-birthday-cake"></i> @Model.Birthday &nbsp;&nbsp;
+                        <i class="fa fa-phone"></i> @phone &nbsp;&nbsp;
+                        <i class="fa fa-envelope"></i> @email &nbsp;&nbsp;
+                    </p>
+
+                    <br />
+                    <h5>
+                        Notas y comentarios
+                    </h5>
+                    @if (Model.Notes == null || Model.Notes.Trim() == string.Empty)
+                    {
+                        <p>No hay notas ni comentarios disponibles.</p>
+                    }
+                    else
+                    {
+                        <p>@Model.Notes</p>
+                    }
+
+                    <br />
+                    <h5>
+                        Nuestro cliente desde <b>@Model.ClientSince</b>
+                    </h5>
+
+                    <br />
+                    <h5>
+                        Su Categoría de Auto preferida es <b>@Model.PreferedCarCategory.ToUpper()</b>
+                    </h5>
+
+                    <br />
+                    <h5>
+                        Estadística de reservas de auto
+                    </h5>
+                    <div class="row m-t-lg">
+                        <div class="col-md-4">
+                            <span class="bar" style="display: none;">5,3,9,6,5,9,7,3,5,2</span><svg class="peity" height="16" width="32"><rect fill="#1ab394" x="0" y="7.111111111111111" width="2.3" height="8.88888888888889"></rect><rect fill="#d7d7d7" x="3.3" y="10.666666666666668" width="2.3" height="5.333333333333333"></rect><rect fill="#1ab394" x="6.6" y="0" width="2.3" height="16"></rect><rect fill="#d7d7d7" x="9.899999999999999" y="5.333333333333334" width="2.3" height="10.666666666666666"></rect><rect fill="#1ab394" x="13.2" y="7.111111111111111" width="2.3" height="8.88888888888889"></rect><rect fill="#d7d7d7" x="16.5" y="0" width="2.3" height="16"></rect><rect fill="#1ab394" x="19.799999999999997" y="3.555555555555557" width="2.3" height="12.444444444444443"></rect><rect fill="#d7d7d7" x="23.099999999999998" y="10.666666666666668" width="2.3" height="5.333333333333333"></rect><rect fill="#1ab394" x="26.4" y="7.111111111111111" width="2.3" height="8.88888888888889"></rect><rect fill="#d7d7d7" x="29.7" y="12.444444444444445" width="2.3" height="3.5555555555555554"></rect></svg>
+                            <h5><strong>@Model.TotalCarReservations</strong> reserva(s) en total</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="line" style="display: none;">5,3,9,6,5,9,7,3,5,2</span><svg class="peity" height="16" width="32"><polygon fill="#1ab394" points="0 15 0 7.166666666666666 3.5555555555555554 10.5 7.111111111111111 0.5 10.666666666666666 5.5 14.222222222222221 7.166666666666666 17.77777777777778 0.5 21.333333333333332 3.833333333333332 24.888888888888886 10.5 28.444444444444443 7.166666666666666 32 12.166666666666666 32 15"></polygon><polyline fill="transparent" points="0 7.166666666666666 3.5555555555555554 10.5 7.111111111111111 0.5 10.666666666666666 5.5 14.222222222222221 7.166666666666666 17.77777777777778 0.5 21.333333333333332 3.833333333333332 24.888888888888886 10.5 28.444444444444443 7.166666666666666 32 12.166666666666666" stroke="#169c81" stroke-width="1" stroke-linecap="square"></polyline></svg>
+                            <h5><strong>@Model.AverageCarReservationDays</strong> día(s) por reserva</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="bar" style="display: none;">5,3,2,-1,-3,-2,2,3,5,2</span><svg class="peity" height="16" width="32"><rect fill="#1ab394" x="0" y="0" width="2.3" height="10"></rect><rect fill="#d7d7d7" x="3.3" y="4" width="2.3" height="6"></rect><rect fill="#1ab394" x="6.6" y="6" width="2.3" height="4"></rect><rect fill="#d7d7d7" x="9.899999999999999" y="10" width="2.3" height="2"></rect><rect fill="#1ab394" x="13.2" y="10" width="2.3" height="6"></rect><rect fill="#d7d7d7" x="16.5" y="10" width="2.3" height="4"></rect><rect fill="#1ab394" x="19.799999999999997" y="6" width="2.3" height="4"></rect><rect fill="#d7d7d7" x="23.099999999999998" y="4" width="2.3" height="6"></rect><rect fill="#1ab394" x="26.4" y="0" width="2.3" height="10"></rect><rect fill="#d7d7d7" x="29.7" y="6" width="2.3" height="4"></rect></svg>
+                            <h5><strong>@Model.AverageCarReservationsPerYear</strong> reserva(s) por año</h5>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="user-button">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-sm btn-block" href="@Url.Action("Edit", "Clients", new { ClientId = Model.Id, ReturnUrl = Model.ReturnUrl })"><i class="fa fa-edit"></i> Modificar</a>
+                            </div>
+                            <div class="col-md-6">
+                                @if (Model.Troubled)
+                                {
+                                    <a class="btn btn-success btn-sm btn-block" onclick="pageController.markClientAsTroubled(@Model.Id, false)"><i class="fa fa-thumbs-up"></i> Clasificar como No Problemático</a>
+                                }
+                                else
+                                {
+                                    <a data-toggle="modal" data-target="#troubledConfirmationModal" class="btn btn-danger btn-sm btn-block"><i class="fa fa-thumbs-down"></i> Clasificar como Problemático</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Actividades</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div>
+                    <div class="feed-activity-list">
+                        @foreach (ClientActivityModel r in Model.Activities)
+                        {
+                            var reservationNumber = r.CarReservationNumber == null || r.CarReservationNumber.Trim() == string.Empty ? " que no fué confirmada" : " con número de confirmación " + r.CarReservationNumber;
+                            var discount = r.CarReservationDiscount == 0 ? "no recibió descuentos" : "recibió descuentos";
+                            var notesTitle = r.CarReservationNote == null || r.CarReservationNote.Trim() == string.Empty ? "y no se registraron notas." : "y fué registrada la siguiente nota: ";
+                            var notes = r.CarReservationNote == null || r.CarReservationNote.Trim() == string.Empty ? string.Empty : r.CarReservationNote.Trim();
+                            var cancelledTitle = r.Cancelled ? " pero fué" : " y";
+                            var cancelled = r.Cancelled ? " cancelada" : " no fué cancelada";
+                            <div class="feed-element">
+                                <span class="fa fa-2x fa-car pull-left"></span>
+                                <div class="media-body ">
+                                    <small class="pull-right text-navy">CREADA EL DIA @r.CarReservationCreatedOn</small>
+                                    <strong>@r.CarReservationCreatedByUser.ToUpper()</strong> creó una reserva de auto <strong> @reservationNumber</strong> @cancelledTitle <strong>@cancelled</strong><br>
+                                    <small class="text-muted">Desde <b>@r.CarReservationFromDate</b> hasta <b>@r.CarReservationToDate</b>, categoría <b>@r.CarReservationCarCategory.ToUpper()</b>, recogida en <b>@r.CarReservationRentCarPlace.ToUpper()</b> a un precio de <b>@string.Format("{0:c}", r.CarReservationSalePrice)</b> por día. En esta ocasión <b>@discount.ToUpper()</b> @notesTitle <b>@notes</b></small>
+                                    <br />
+                                    <div class="actions">
+                                        <a class="btn btn-xs btn-white"><i class="fa fa-copy"></i> Crear una nueva reserva considerando esta información </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/plugins/toastr")
+@Scripts.Render("~/app/viewclient")
+

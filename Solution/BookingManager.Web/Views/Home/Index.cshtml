@@ -1,0 +1,82 @@
+﻿@using BookingManager.Web.Helpers
+@using BookingManager.Web.Models
+@using Cars.DTO
+@model HomeViewModel
+
+@{
+    ViewBag.Title = "Tablero";
+    var userFullname = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.UserFullnameTagNam);
+}
+
+@Html.HiddenFor(m => m.CanSeePaymentsChart)
+
+<div class="row  border-bottom white-bg dashboard-header">
+    <div class="col-sm-5">
+        <h2>Bienvenida(o) @userFullname</h2>
+        <small>Usted tiene @Model.TotalUnconfirmedCarReservations reservas activas que están pendientes por confirmación</small>
+
+        <br /><br />
+        @{
+            var labelFormat = "";
+            for (int index = 0; index <= Model.CarReservationsPendingForConfirmation.Count() - 1; index += 1)
+            {
+                if (index % 2 == 0) { labelFormat = "label-success"; }
+                else if (index % 3 == 0) { labelFormat = "label-primary"; }
+                else if (index % 5 == 0) { labelFormat = "label-info"; }
+                else { labelFormat = "label-default"; }
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="@Url.Action("Edit", "CarReservations", new { Id = Model.CarReservationsPendingForConfirmation[index].CarReservationId })"><span class="label @labelFormat">@(index + 1)</span>&nbsp;&nbsp;@Model.CarReservationsPendingForConfirmation[index].ClientFullname @Model.CarReservationsPendingForConfirmation[index].ClientPhone</a>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-sm-6">
+                        @Model.CarReservationsPendingForConfirmation[index].CarCategoryName, @Model.CarReservationsPendingForConfirmation[index].FromDate - @Model.CarReservationsPendingForConfirmation[index].ToDate, @Model.CarReservationsPendingForConfirmation[index].Days días
+                    </div>
+                </div>
+                <br />
+            }
+        }
+
+        @*<ul class="list-group clear-list m-t">
+            @{
+                var labelFormat = "";
+                for (int index = 0; index <= Model.CarReservationsPendingForConfirmation.Count() - 1; index += 1)
+                {
+                    if (index % 2 == 0) { labelFormat = "label-success"; }
+                    else if (index % 3 == 0) { labelFormat = "label-primary"; }
+                    else if (index % 5 == 0) { labelFormat = "label-info"; }
+                    else { labelFormat = "label-default"; }
+                    <li class="list-group-item fist-item">
+                        <span class="pull-right">
+                            @Model.CarReservationsPendingForConfirmation[index].CarCategoryName, @Model.CarReservationsPendingForConfirmation[index].FromDate - @Model.CarReservationsPendingForConfirmation[index].ToDate, @Model.CarReservationsPendingForConfirmation[index].Days días
+                        </span>
+                        <a href="@Url.Action("Edit", "CarReservations", new { Id = Model.CarReservationsPendingForConfirmation[index].CarReservationId })"><span class="label @labelFormat">@(index + 1)</span> @Model.CarReservationsPendingForConfirmation[index].ClientFullname @Model.CarReservationsPendingForConfirmation[index].ClientPhone</a>
+                    </li>
+                }
+            }
+        </ul>*@
+    </div>
+    <div class="col-sm-7">
+        <label><small>Comparativo de sus ventas de reservas de auto (Enero 2018, 2019)</small></label>
+        <div>
+            <canvas id="lineChart" height="355" width="762" style="display: block; width: 762px; height: 355px;"></canvas>
+        </div>
+    </div>
+</div>
+<br />
+
+@if (Model.CanSeePaymentsChart)
+    {
+    <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-sm-12">
+            <label><small>Sumario de pagos realizados en la semana actual</small></label>
+            <div>
+                <canvas id="paymentChart" height="355" width="762" style="display: block; width: 762px; height: 355px;"></canvas>
+            </div>
+            <br /><br />
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/plugins/charts")
+@Scripts.Render("~/app/index")

@@ -1,0 +1,1052 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Cars.DL.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CarCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CarTransmissionId" Type="int" Nullable="false" />
+          <Property Name="InsurancePremium" Type="float" Nullable="false" />
+          <Property Name="IndexOrder" Type="int" />
+        </EntityType>
+        <EntityType Name="CarCategoryReservationDays">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarCategoryId" Type="int" Nullable="false" />
+          <Property Name="ReservationDayId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarProviders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageId" Type="int" />
+        </EntityType>
+        <EntityType Name="CarProvidersCarCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarProviderId" Type="int" />
+          <Property Name="CarCategoryId" Type="int" />
+        </EntityType>
+        <EntityType Name="CarReservations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="CancelledOn" Type="datetime" />
+          <Property Name="CancelledBy" Type="int" />
+          <Property Name="PaymentStatusId" Type="int" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="ReservationNumber" Type="varchar" MaxLength="50" />
+          <Property Name="FlightNumber" Type="varchar" MaxLength="50" />
+          <Property Name="FromDate" Type="datetime" Nullable="false" />
+          <Property Name="ToDate" Type="datetime" Nullable="false" />
+          <Property Name="CarProviderId" Type="int" />
+          <Property Name="CarCategoryId" Type="int" />
+          <Property Name="TourOperatorId" Type="int" />
+          <Property Name="ProvinceId" Type="int" />
+          <Property Name="RentCarPlaceId" Type="int" />
+          <Property Name="HasInsurance" Type="bit" />
+          <Property Name="CostPrice" Type="float" />
+          <Property Name="SalePrice" Type="float" />
+          <Property Name="InsuranceCost" Type="float" />
+          <Property Name="Discount" Type="float" />
+          <Property Name="Note" Type="varchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Cars-0000.dbo.CarReservations_Log' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CarReservations_Log">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="CreatedOn" />
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="CancelledOn" Type="datetime" />
+          <Property Name="CancelledBy" Type="int" />
+          <Property Name="PaymentStatusId" Type="int" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="ReservationNumber" Type="varchar" MaxLength="50" />
+          <Property Name="FlightNumber" Type="varchar" MaxLength="50" />
+          <Property Name="FromDate" Type="datetime" />
+          <Property Name="ToDate" Type="datetime" />
+          <Property Name="CarProviderId" Type="int" />
+          <Property Name="CarCategoryId" Type="int" />
+          <Property Name="TourOperatorId" Type="int" />
+          <Property Name="ProvinceId" Type="int" />
+          <Property Name="RentCarPlaceId" Type="int" />
+          <Property Name="HasInsurance" Type="bit" />
+          <Property Name="CostPrice" Type="float" />
+          <Property Name="SalePrice" Type="float" />
+          <Property Name="InsuranceCost" Type="float" />
+          <Property Name="Discount" Type="float" />
+          <Property Name="Note" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="CarTransmissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedByUserId" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedByUserId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="200" />
+          <Property Name="LinkedToAgencyId" Type="int" />
+          <Property Name="Troubled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConfirmationStatuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Path" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="LinkedAgencies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="ContactName" Type="varchar(max)" />
+          <Property Name="Phone" Type="varchar(max)" />
+          <Property Name="Email" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="PaymentConcepts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AffectFinalPrice" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentMethods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedByUserId" Type="int" Nullable="false" />
+          <Property Name="ReservationId" Type="int" Nullable="false" />
+          <Property Name="ConceptId" Type="int" Nullable="false" />
+          <Property Name="MethodId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="IsReimbursement" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentStatuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceConfigurations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarCategoryId" Type="int" Nullable="false" />
+          <Property Name="TourOperatorId" Type="int" Nullable="false" />
+          <Property Name="SeasonId" Type="int" Nullable="false" />
+          <Property Name="ReservationDayId" Type="int" Nullable="false" />
+          <Property Name="CostPrice" Type="float" Nullable="false" />
+          <Property Name="SalePrice" Type="float" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Privileges">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Provinces">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentCarPlaces">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ProvinceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentMEConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="150" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="RentMEVersion" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VoucherNotes" Type="nvarchar" MaxLength="150" />
+          <Property Name="ImageId" Type="int" />
+          <Property Name="Disclaimer" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ReservationDays">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromDay" Type="int" Nullable="false" />
+          <Property Name="ToDay" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SeasonDates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeasonId" Type="int" Nullable="false" />
+          <Property Name="FromDate" Type="int" Nullable="false" />
+          <Property Name="ToDate" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seasons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TourOperatorCarProviders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarProviderId" Type="int" Nullable="false" />
+          <Property Name="TourOperatorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TourOperators">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IncludesInsurance" Type="bit" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="ImageId" Type="int" />
+        </EntityType>
+        <EntityType Name="TourOperatorsParent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserPrivileges">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrivilegeId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="CarsDLStoreContainer">
+          <EntitySet Name="CarCategories" EntityType="Self.CarCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarCategoryReservationDays" EntityType="Self.CarCategoryReservationDays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarProviders" EntityType="Self.CarProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarProvidersCarCategories" EntityType="Self.CarProvidersCarCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarReservations" EntityType="Self.CarReservations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarTransmissions" EntityType="Self.CarTransmissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConfirmationStatuses" EntityType="Self.ConfirmationStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LinkedAgencies" EntityType="Self.LinkedAgencies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentConcepts" EntityType="Self.PaymentConcepts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentStatuses" EntityType="Self.PaymentStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceConfigurations" EntityType="Self.PriceConfigurations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Privileges" EntityType="Self.Privileges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentCarPlaces" EntityType="Self.RentCarPlaces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentMEConfiguration" EntityType="Self.RentMEConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReservationDays" EntityType="Self.ReservationDays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SeasonDates" EntityType="Self.SeasonDates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seasons" EntityType="Self.Seasons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TourOperatorCarProviders" EntityType="Self.TourOperatorCarProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TourOperators" EntityType="Self.TourOperators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TourOperatorsParent" EntityType="Self.TourOperatorsParent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPrivileges" EntityType="Self.UserPrivileges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarReservations_Log" EntityType="Self.CarReservations_Log" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CarReservations_Log].[Id] AS [Id], 
+    [CarReservations_Log].[CreatedBy] AS [CreatedBy], 
+    [CarReservations_Log].[CreatedOn] AS [CreatedOn], 
+    [CarReservations_Log].[ModifiedBy] AS [ModifiedBy], 
+    [CarReservations_Log].[ModifiedOn] AS [ModifiedOn], 
+    [CarReservations_Log].[CancelledOn] AS [CancelledOn], 
+    [CarReservations_Log].[CancelledBy] AS [CancelledBy], 
+    [CarReservations_Log].[PaymentStatusId] AS [PaymentStatusId], 
+    [CarReservations_Log].[ClientId] AS [ClientId], 
+    [CarReservations_Log].[ReservationNumber] AS [ReservationNumber], 
+    [CarReservations_Log].[FlightNumber] AS [FlightNumber], 
+    [CarReservations_Log].[FromDate] AS [FromDate], 
+    [CarReservations_Log].[ToDate] AS [ToDate], 
+    [CarReservations_Log].[CarProviderId] AS [CarProviderId], 
+    [CarReservations_Log].[CarCategoryId] AS [CarCategoryId], 
+    [CarReservations_Log].[TourOperatorId] AS [TourOperatorId], 
+    [CarReservations_Log].[ProvinceId] AS [ProvinceId], 
+    [CarReservations_Log].[RentCarPlaceId] AS [RentCarPlaceId], 
+    [CarReservations_Log].[HasInsurance] AS [HasInsurance], 
+    [CarReservations_Log].[CostPrice] AS [CostPrice], 
+    [CarReservations_Log].[SalePrice] AS [SalePrice], 
+    [CarReservations_Log].[InsuranceCost] AS [InsuranceCost], 
+    [CarReservations_Log].[Discount] AS [Discount], 
+    [CarReservations_Log].[Note] AS [Note]
+    FROM [dbo].[CarReservations_Log] AS [CarReservations_Log]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Cars.DL" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CarCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CarTransmissionId" Type="Int32" Nullable="false" />
+          <Property Name="InsurancePremium" Type="Double" Nullable="false" />
+          <Property Name="IndexOrder" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CarCategoryReservationDay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationDayId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImageId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CarProvidersCarCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarProviderId" Type="Int32" />
+          <Property Name="CarCategoryId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CarReservation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="CancelledOn" Type="DateTime" Precision="3" />
+          <Property Name="CancelledBy" Type="Int32" />
+          <Property Name="PaymentStatusId" Type="Int32" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CarProviderId" Type="Int32" />
+          <Property Name="CarCategoryId" Type="Int32" />
+          <Property Name="TourOperatorId" Type="Int32" />
+          <Property Name="ProvinceId" Type="Int32" />
+          <Property Name="RentCarPlaceId" Type="Int32" />
+          <Property Name="HasInsurance" Type="Boolean" />
+          <Property Name="CostPrice" Type="Double" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="InsuranceCost" Type="Double" />
+          <Property Name="Discount" Type="Double" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CarTransmission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedByUserId" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedByUserId" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LinkedToAgencyId" Type="Int32" />
+          <Property Name="Troubled" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConfirmationStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PaymentConcept">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AffectFinalPrice" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedByUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedByUserId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationId" Type="Int32" Nullable="false" />
+          <Property Name="ConceptId" Type="Int32" Nullable="false" />
+          <Property Name="MethodId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="IsReimbursement" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="TourOperatorId" Type="Int32" Nullable="false" />
+          <Property Name="SeasonId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationDayId" Type="Int32" Nullable="false" />
+          <Property Name="CostPrice" Type="Double" Nullable="false" />
+          <Property Name="SalePrice" Type="Double" Nullable="false" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Privilege">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Province">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentCarPlace">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ProvinceId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentMEConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RentMEVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VoucherNotes" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ImageId" Type="Int32" />
+          <Property Name="Disclaimer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ReservationDay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromDay" Type="Int32" Nullable="false" />
+          <Property Name="ToDay" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SeasonDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeasonId" Type="Int32" Nullable="false" />
+          <Property Name="FromDate" Type="Int32" Nullable="false" />
+          <Property Name="ToDate" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Season">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TourOperatorCarProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarProviderId" Type="Int32" Nullable="false" />
+          <Property Name="TourOperatorId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TourOperator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IncludesInsurance" Type="Boolean" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ImageId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TourOperatorsParent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserPrivilege">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrivilegeId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarReservations_Log">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="CreatedOn" />
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="CancelledOn" Type="DateTime" Precision="3" />
+          <Property Name="CancelledBy" Type="Int32" />
+          <Property Name="PaymentStatusId" Type="Int32" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FromDate" Type="DateTime" Precision="3" />
+          <Property Name="ToDate" Type="DateTime" Precision="3" />
+          <Property Name="CarProviderId" Type="Int32" />
+          <Property Name="CarCategoryId" Type="Int32" />
+          <Property Name="TourOperatorId" Type="Int32" />
+          <Property Name="ProvinceId" Type="Int32" />
+          <Property Name="RentCarPlaceId" Type="Int32" />
+          <Property Name="HasInsurance" Type="Boolean" />
+          <Property Name="CostPrice" Type="Double" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="InsuranceCost" Type="Double" />
+          <Property Name="Discount" Type="Double" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LinkedAgency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="CarsModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CarCategories" EntityType="Self.CarCategory" />
+          <EntitySet Name="CarCategoryReservationDays" EntityType="Self.CarCategoryReservationDay" />
+          <EntitySet Name="CarProviders" EntityType="Self.CarProvider" />
+          <EntitySet Name="CarProvidersCarCategories" EntityType="Self.CarProvidersCarCategory" />
+          <EntitySet Name="CarReservations" EntityType="Self.CarReservation" />
+          <EntitySet Name="CarTransmissions" EntityType="Self.CarTransmission" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="ConfirmationStatuses" EntityType="Self.ConfirmationStatus" />
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="PaymentConcepts" EntityType="Self.PaymentConcept" />
+          <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="PaymentStatuses" EntityType="Self.PaymentStatus" />
+          <EntitySet Name="PriceConfigurations" EntityType="Self.PriceConfiguration" />
+          <EntitySet Name="Privileges" EntityType="Self.Privilege" />
+          <EntitySet Name="Provinces" EntityType="Self.Province" />
+          <EntitySet Name="RentCarPlaces" EntityType="Self.RentCarPlace" />
+          <EntitySet Name="RentMEConfigurations" EntityType="Self.RentMEConfiguration" />
+          <EntitySet Name="ReservationDays" EntityType="Self.ReservationDay" />
+          <EntitySet Name="SeasonDates" EntityType="Self.SeasonDate" />
+          <EntitySet Name="Seasons" EntityType="Self.Season" />
+          <EntitySet Name="TourOperatorCarProviders" EntityType="Self.TourOperatorCarProvider" />
+          <EntitySet Name="TourOperators" EntityType="Self.TourOperator" />
+          <EntitySet Name="TourOperatorsParents" EntityType="Self.TourOperatorsParent" />
+          <EntitySet Name="UserPrivileges" EntityType="Self.UserPrivilege" />
+          <EntitySet Name="CarReservations_Log" EntityType="Self.CarReservations_Log" />
+          <EntitySet Name="LinkedAgencies" EntityType="Self.LinkedAgency" />
+          <FunctionImport Name="GetPriceConfigurationForReservation">
+            <Parameter Name="CarCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="TourOperatorId" Mode="In" Type="Int32" />
+            <Parameter Name="From" Mode="In" Type="DateTime" />
+            <Parameter Name="To" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CarsDLStoreContainer" CdmEntityContainer="CarsModel">
+          <EntitySetMapping Name="CarCategories">
+            <EntityTypeMapping TypeName="Cars.DL.CarCategory">
+              <MappingFragment StoreEntitySet="CarCategories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CarTransmissionId" ColumnName="CarTransmissionId" />
+                <ScalarProperty Name="InsurancePremium" ColumnName="InsurancePremium" />
+                <ScalarProperty Name="IndexOrder" ColumnName="IndexOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarCategoryReservationDays">
+            <EntityTypeMapping TypeName="Cars.DL.CarCategoryReservationDay">
+              <MappingFragment StoreEntitySet="CarCategoryReservationDays">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CarCategoryId" ColumnName="CarCategoryId" />
+                <ScalarProperty Name="ReservationDayId" ColumnName="ReservationDayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarProviders">
+            <EntityTypeMapping TypeName="Cars.DL.CarProvider">
+              <MappingFragment StoreEntitySet="CarProviders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarProvidersCarCategories">
+            <EntityTypeMapping TypeName="Cars.DL.CarProvidersCarCategory">
+              <MappingFragment StoreEntitySet="CarProvidersCarCategories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CarProviderId" ColumnName="CarProviderId" />
+                <ScalarProperty Name="CarCategoryId" ColumnName="CarCategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarReservations">
+            <EntityTypeMapping TypeName="Cars.DL.CarReservation">
+              <MappingFragment StoreEntitySet="CarReservations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CancelledOn" ColumnName="CancelledOn" />
+                <ScalarProperty Name="CancelledBy" ColumnName="CancelledBy" />
+                <ScalarProperty Name="PaymentStatusId" ColumnName="PaymentStatusId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ReservationNumber" ColumnName="ReservationNumber" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="CarProviderId" ColumnName="CarProviderId" />
+                <ScalarProperty Name="CarCategoryId" ColumnName="CarCategoryId" />
+                <ScalarProperty Name="TourOperatorId" ColumnName="TourOperatorId" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="RentCarPlaceId" ColumnName="RentCarPlaceId" />
+                <ScalarProperty Name="HasInsurance" ColumnName="HasInsurance" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="InsuranceCost" ColumnName="InsuranceCost" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarTransmissions">
+            <EntityTypeMapping TypeName="Cars.DL.CarTransmission">
+              <MappingFragment StoreEntitySet="CarTransmissions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="Cars.DL.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="Troubled" ColumnName="Troubled" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByUserId" ColumnName="ModifiedByUserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="LinkedToAgencyId" ColumnName="LinkedToAgencyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConfirmationStatuses">
+            <EntityTypeMapping TypeName="Cars.DL.ConfirmationStatus">
+              <MappingFragment StoreEntitySet="ConfirmationStatuses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="Cars.DL.Image">
+              <MappingFragment StoreEntitySet="Images">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentConcepts">
+            <EntityTypeMapping TypeName="Cars.DL.PaymentConcept">
+              <MappingFragment StoreEntitySet="PaymentConcepts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AffectFinalPrice" ColumnName="AffectFinalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentMethods">
+            <EntityTypeMapping TypeName="Cars.DL.PaymentMethod">
+              <MappingFragment StoreEntitySet="PaymentMethods">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="Cars.DL.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedByUserId" ColumnName="ModifiedByUserId" />
+                <ScalarProperty Name="ReservationId" ColumnName="ReservationId" />
+                <ScalarProperty Name="ConceptId" ColumnName="ConceptId" />
+                <ScalarProperty Name="MethodId" ColumnName="MethodId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsReimbursement" ColumnName="IsReimbursement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentStatuses">
+            <EntityTypeMapping TypeName="Cars.DL.PaymentStatus">
+              <MappingFragment StoreEntitySet="PaymentStatuses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceConfigurations">
+            <EntityTypeMapping TypeName="Cars.DL.PriceConfiguration">
+              <MappingFragment StoreEntitySet="PriceConfigurations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CarCategoryId" ColumnName="CarCategoryId" />
+                <ScalarProperty Name="TourOperatorId" ColumnName="TourOperatorId" />
+                <ScalarProperty Name="SeasonId" ColumnName="SeasonId" />
+                <ScalarProperty Name="ReservationDayId" ColumnName="ReservationDayId" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Privileges">
+            <EntityTypeMapping TypeName="Cars.DL.Privilege">
+              <MappingFragment StoreEntitySet="Privileges">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provinces">
+            <EntityTypeMapping TypeName="Cars.DL.Province">
+              <MappingFragment StoreEntitySet="Provinces">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentCarPlaces">
+            <EntityTypeMapping TypeName="Cars.DL.RentCarPlace">
+              <MappingFragment StoreEntitySet="RentCarPlaces">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentMEConfigurations">
+            <EntityTypeMapping TypeName="Cars.DL.RentMEConfiguration">
+              <MappingFragment StoreEntitySet="RentMEConfiguration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RentMEVersion" ColumnName="RentMEVersion" />
+                <ScalarProperty Name="VoucherNotes" ColumnName="VoucherNotes" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="Disclaimer" ColumnName="Disclaimer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReservationDays">
+            <EntityTypeMapping TypeName="Cars.DL.ReservationDay">
+              <MappingFragment StoreEntitySet="ReservationDays">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FromDay" ColumnName="FromDay" />
+                <ScalarProperty Name="ToDay" ColumnName="ToDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SeasonDates">
+            <EntityTypeMapping TypeName="Cars.DL.SeasonDate">
+              <MappingFragment StoreEntitySet="SeasonDates">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SeasonId" ColumnName="SeasonId" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seasons">
+            <EntityTypeMapping TypeName="Cars.DL.Season">
+              <MappingFragment StoreEntitySet="Seasons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TourOperatorCarProviders">
+            <EntityTypeMapping TypeName="Cars.DL.TourOperatorCarProvider">
+              <MappingFragment StoreEntitySet="TourOperatorCarProviders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CarProviderId" ColumnName="CarProviderId" />
+                <ScalarProperty Name="TourOperatorId" ColumnName="TourOperatorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TourOperators">
+            <EntityTypeMapping TypeName="Cars.DL.TourOperator">
+              <MappingFragment StoreEntitySet="TourOperators">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IncludesInsurance" ColumnName="IncludesInsurance" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TourOperatorsParents">
+            <EntityTypeMapping TypeName="Cars.DL.TourOperatorsParent">
+              <MappingFragment StoreEntitySet="TourOperatorsParent">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPrivileges">
+            <EntityTypeMapping TypeName="Cars.DL.UserPrivilege">
+              <MappingFragment StoreEntitySet="UserPrivileges">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PrivilegeId" ColumnName="PrivilegeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarReservations_Log">
+            <EntityTypeMapping TypeName="Cars.DL.CarReservations_Log">
+              <MappingFragment StoreEntitySet="CarReservations_Log">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CancelledOn" ColumnName="CancelledOn" />
+                <ScalarProperty Name="CancelledBy" ColumnName="CancelledBy" />
+                <ScalarProperty Name="PaymentStatusId" ColumnName="PaymentStatusId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ReservationNumber" ColumnName="ReservationNumber" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="CarProviderId" ColumnName="CarProviderId" />
+                <ScalarProperty Name="CarCategoryId" ColumnName="CarCategoryId" />
+                <ScalarProperty Name="TourOperatorId" ColumnName="TourOperatorId" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="RentCarPlaceId" ColumnName="RentCarPlaceId" />
+                <ScalarProperty Name="HasInsurance" ColumnName="HasInsurance" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="InsuranceCost" ColumnName="InsuranceCost" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LinkedAgencies">
+            <EntityTypeMapping TypeName="Cars.DL.LinkedAgency">
+              <MappingFragment StoreEntitySet="LinkedAgencies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

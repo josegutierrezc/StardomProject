@@ -1,0 +1,100 @@
+﻿@using BookingManager.Web.Models
+@using BookingManager.Web.Helpers
+@model PriceConfigurationViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var IsManager = User.IsInRole("sysadmin") | User.IsInRole("priceconfigurationmanager") ? true : false;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-md-12">
+        <h2>Configuración de precio</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">Tablero</a>
+            </li>
+            <li class="active">
+                <strong>Configuración de precio</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Configuración de precio activa  <small>Defina los precios de costo y venta</small></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                @if (IsManager)
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                <b>Descripción:</b> Por favor seleccione primero un Tour Operador y una Temporada en
+                                los controles mostrados mas abajo. Posteriormente defina, por cada rango de días y Categoría de Automóvil los
+                                precios de costo y venta. Al finalizar haga click en Guardar para salvar los cambios.
+                            </p>
+                        </div>
+                    </div>
+
+                    <br />
+                    using (Html.BeginForm("UpdatePriceConfiguration", "CarPriceConfiguration", FormMethod.Post, new { @id = "formUpdate" }))
+                    {
+                        <div class="row">
+                            <div class="col-sm-4">
+                                @Html.LabelFor(m => m.TourOperatorId)
+                                @Html.DropDownListFor(m => m.TourOperatorId, ViewData["TourOperators"] as SelectList, "-- Seleccione uno --", new { @class = "form-control", @onchange = "pageController.onSelectionChanged();" })
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.LabelFor(m => m.SeasonId)
+                                @Html.DropDownListFor(m => m.SeasonId, ViewData["Seasons"] as SelectList, "-- Seleccione una --", new { @class = "form-control", @onchange = "pageController.onSelectionChanged();" })
+                            </div>
+                        </div>
+
+                        <br />
+                        <div id="divPriceConfiguration">
+                            @Html.Partial("_PriceConfiguration", Model)
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="text-danger">
+                                Usted no tiene autorización para acceder a esta página.
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/plugins/toastr")
+@Scripts.Render("~/app/priceconfiguration")
+
+<style type="text/css">
+    tr:hover {
+        background-color: whitesmoke;
+        cursor: pointer;
+    }
+
+    td a {
+        display: block;
+        border: 1px solid black;
+        padding: 16px;
+    }
+</style>
+

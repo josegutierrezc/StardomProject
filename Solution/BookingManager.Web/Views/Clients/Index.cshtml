@@ -1,0 +1,73 @@
+﻿@using BookingManager.Web.Models
+@model ClientsLogViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var IsCarReservationManager = User.IsInRole("sysadmin") | User.IsInRole("reservationsclerk") ? true : false;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Clientes</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a>Tablero</a>
+            </li>
+            <li class="active">
+                <strong>Clientes</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <a class="btn btn-sm btn-primary pull-right" href="@Url.Action("Add", "Clients")"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar nuevo</a>
+                    <h2>Clientes</h2>
+                    @if (IsCarReservationManager)
+                    {
+                        <p>
+                            Todos los clientes tienen que tener teléfonos y correos electrónicos antes de incorporarse al sistema.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-danger">
+                            Usted no tiene permiso para crear o modificar reservas en el sistema.
+                        </p>
+                    }
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SearchFor, new { @class = "form-control", @placeholder = "Buscar clientes" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn btn-primary" onclick="pageController.onActiveSearch();"> <i class="fa fa-search"></i> Buscar</button>
+                        </span>
+                    </div>
+                    <div id="divClients">
+                        @Html.Partial("_Clients", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-lg-4">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="divClientDetails">
+                            @Html.Partial("_ClientDetails", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/plugins/toastr")
+@Scripts.Render("~/app/clients")
+

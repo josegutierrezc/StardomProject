@@ -1,0 +1,56 @@
+﻿@using BookingManager.Web.Models
+@model PriceConfigurationViewModel
+
+@Html.Label("Configuración:")
+
+@if (Model.Columns.Count() == 0)
+{
+    <div class="row">
+        <div class="col-sm-12" style="text-align:center">
+            <br /><br />
+            <h2>No se encontró configuración de precio para la selección actual.</h2>
+        </div>
+    </div>
+}
+else
+{
+    <table class="footable table table-striped" data-show-toggle="false" data-sorting="true" data-paging="false" data-filtering="false">
+        <thead>
+            <tr>
+                <th>Categorías</th>
+                @foreach (KeyValuePair<int, KeyValuePair<int, PriceColumnModel>> kvpColumn in Model.Columns)
+                {
+                    <th>@kvpColumn.Value.Value.Description</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<int, KeyValuePair<int, PriceRowModel>> kvpRow in Model.Rows)
+            {
+                <tr>
+                    <td>@kvpRow.Value.Value.Description</td>
+                    @foreach (KeyValuePair<int, KeyValuePair<int, PriceColumnModel>> kvpColumn in Model.Columns)
+                    {
+                        <td>
+                            <div class="form-inline">
+                                @Html.HiddenFor(m => m.Data[kvpRow.Value.Key][kvpColumn.Value.Key].CarCategoryId)
+                                @Html.HiddenFor(m => m.Data[kvpRow.Value.Key][kvpColumn.Value.Key].ReservationDayId)
+                                @Html.TextBoxFor(m => m.Data[kvpRow.Value.Key][kvpColumn.Value.Key].CostPrice, new { @class = "form-control", @placeholder = "costo" })
+                                @Html.TextBoxFor(m => m.Data[kvpRow.Value.Key][kvpColumn.Value.Key].SalePrice, new { @class = "form-control", @placeholder = "venta" })
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+    <div class="row">
+        <div class="col-sm-12" style="text-align:center">
+            <a class="btn btn-success" onclick="pageController.update();">Actualizar</a>
+        </div>
+    </div>
+}
+
+

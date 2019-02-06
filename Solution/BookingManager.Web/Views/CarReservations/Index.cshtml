@@ -1,0 +1,158 @@
+﻿@using BookingManager.Web.Models;
+@using Cars.DTO;
+@model CarReservationsLogModel
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-md-12">
+        <h2>Reservas de Automóviles</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">Tablero</a>
+            </li>
+            <li class="active">
+                <strong>Reservas de Auto</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1"> Activas</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-2">Histórico</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><b>Descripción:</b> Las reservas que se muestran a continuación son todas aquellas cuya fecha de entrega son posteriores o iguales a la fecha de hoy. Por defecto, inicialmente son solo mostradas 50 reservas por página, usted puede modificar esta cantidad cuando lo necesite en el cuadro que asi lo indica al final de la tabla de reservas, aqui también puede seleccionar una página en específico y debajo de estas líneas encontrará un control en el que podrá realizar búsquedas mas específicas.</p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Posibles estados de la Reserva: </b>
+                                    <span class="badge badge-primary">C</span> Confirmada &nbsp;&nbsp;
+                                    <span class="badge badge-danger">C</span> No Confirmada &nbsp;&nbsp;
+                                    <span class="badge badge-inverse">C</span> Cancelada &nbsp;&nbsp;
+                                    <span class="badge badge-primary">P</span> Completamente Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-warning">P</span> Parcialmente Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-danger">P</span> No Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-success">P</span> Pendiente a reembolso
+                                </p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.SearchFor, new { @class = "form-control", @placeholder = "Búsqueda" })
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" onclick="pageController.onActiveSearch();"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.DropDownListFor(m => m.Filter, new SelectList(new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="Mostrar todas", Value = "" },
+                                        new SelectListItem{ Text="Mostrar confirmadas", Value = "CONFIRMED" },
+                                        new SelectListItem{ Text="Mostrar no confirmadas", Value = "UNCONFIRMED" },
+                                        new SelectListItem{ Text="Mostrar canceladas", Value = "CANCELLED" },
+                                        new SelectListItem{ Text="Mostrar pagadas", Value = "FULLYPAID" },
+                                        new SelectListItem{ Text="Mostrar parcialmente pagadas", Value = "PARTIALLYPAID" },
+                                        new SelectListItem{ Text="Mostrar no pagadas", Value = "UNPAID" },
+                                        new SelectListItem{ Text="Mostrar pendientes a reembolso", Value = "PENDINGREFUND" },
+                                     }, "Value", "Text", Model.Filter), new { @class = "form-control", @onchange = "pageController.onFilterChanged();" })
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <br />
+                        @Html.HiddenFor(m => m.SearchFor)
+                        <div id="divActiveReservations">
+                            @Html.Partial("_ActiveReservations", Model)
+                        </div>
+                        <br /><br /><br />
+                    </div>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><b>Descripción:</b> Las reservas que se muestran a continuación son todas aquellas cuya fecha de entrega son inferiores a la fecha de hoy. Por defecto, inicialmente son solo mostradas 50 reservas por página, usted puede modificar esta cantidad cuando lo necesite en el cuadro que asi lo indica al final de la tabla de reservas, aqui también puede seleccionar una página en específico y debajo de estas líneas encontrará un control en el que podrá realizar búsquedas mas específicas.</p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Posibles estados de la Reserva: </b>
+                                    <span class="badge badge-primary">C</span> Confirmada &nbsp;&nbsp;
+                                    <span class="badge badge-danger">C</span> No Confirmada &nbsp;&nbsp;
+                                    <span class="badge badge-inverse">C</span> Cancelada &nbsp;&nbsp;
+                                    <span class="badge badge-primary">P</span> Completamente Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-warning">P</span> Parcialmente Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-danger">P</span> No Pagada &nbsp;&nbsp;
+                                    <span class="badge badge-success">P</span> Pendiente a reembolso
+                                </p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.HistorySearchFor, new { @class = "form-control", @placeholder = "Búsqueda" })
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" onclick="pageController.onHistorySearch();"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    @Html.DropDownListFor(m => m.HistoryFilter, new SelectList(new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="Mostrar todas", Value = "" },
+                                        new SelectListItem{ Text="Mostrar confirmadas", Value = "CONFIRMED" },
+                                        new SelectListItem{ Text="Mostrar no confirmadas", Value = "UNCONFIRMED" },
+                                        new SelectListItem{ Text="Mostrar canceladas", Value = "CANCELLED" },
+                                        new SelectListItem{ Text="Mostrar pagadas", Value = "FULLYPAID" },
+                                        new SelectListItem{ Text="Mostrar parcialmente pagadas", Value = "PARTIALLYPAID" },
+                                        new SelectListItem{ Text="Mostrar no pagadas", Value = "UNPAID" },
+                                        new SelectListItem{ Text="Mostrar pendientes a reembolso", Value = "PENDINGREFUND" },
+                                     }, "Value", "Text", Model.HistoryFilter), new { @class = "form-control", @onchange = "pageController.onHistoryFilterChanged();" })
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <br />
+                        @Html.HiddenFor(m => m.HistorySearchFor)
+                        <div id="divHistoryReservations">
+                            @Html.Partial("_HistoryReservations", Model)
+                        </div>
+                        <br /><br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+@Scripts.Render("~/app/carreservations")
+<style type="text/css">
+    tr:hover {
+        background-color:whitesmoke;
+        cursor: pointer;
+    }
+    td a {
+        display: block;
+        border: 1px solid black;
+        padding: 16px;
+    }
+</style>

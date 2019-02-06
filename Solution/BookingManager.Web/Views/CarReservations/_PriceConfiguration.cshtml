@@ -1,0 +1,40 @@
+﻿@using BookingManager.Web.Models;
+@model CarReservationViewModel
+
+@{
+    var textColor = "";
+    if (Model.CostPrice == 0) { textColor = "text-danger"; }
+}
+@Html.HiddenFor(m => m.PriceConfigurationFound)
+@Html.HiddenFor(m => m.CostPrice)
+@Html.HiddenFor(m => m.SalePrice)
+@Html.HiddenFor(m => m.FinalPrice)
+
+<div class="row">
+    <div class="col-sm-8 col-md-10">
+        <div class="row">
+            <div class="col-sm-4 col-md-4">
+                <small><b>Base x Días</b></small>
+                <br />
+                <h3 class="@textColor">@string.Format("{0:c}", Model.SalePrice) x @Model.Days</h3>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <small><b>Venta</b></small>
+                <br />
+                <h3 class="@textColor">@string.Format("{0:c}", Model.TotalSalePrice)</h3>
+            </div>
+            <div class="col-sm-3 col-md-2">
+                <small><b>Descuento</b></small>
+                <br />
+                @Html.TextBoxFor(m => m.Discount, new { @class = "form-control input-sm", @initval = Model.Discount })
+            </div>
+            <div class="col-sm-3 col-md-4">
+                <small><b>Total a pagar</b></small>
+                <br />
+                <h3 class="@textColor">
+                    @string.Format("{0:c}", Model.FinalPrice)
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>

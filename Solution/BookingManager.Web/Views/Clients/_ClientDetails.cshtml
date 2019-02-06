@@ -1,0 +1,126 @@
+﻿@using BookingManager.Web.Models
+@model ClientsLogViewModel
+
+@{ 
+    var IsCarReservationManager = User.IsInRole("sysadmin") | User.IsInRole("reservationsclerk") ? true : false;
+}
+
+@if (Model.SelectedClient == null)
+{
+    <h3>Nada para mostrar en este panel.</h3>
+    <p>
+        Usted no ve ningún tipo de información en este panel porque no hay ningún cliente seleccionado por usted.
+    </p>
+}
+else
+{
+    var phone = Model.SelectedClient.Phone == string.Empty ? "No registrado" : Model.SelectedClient.Phone;
+    var email = Model.SelectedClient.Email == string.Empty ? "No registrado" : Model.SelectedClient.Email;
+    var notes = Model.SelectedClient.Notes == string.Empty ? "No hay notas registradas" : Model.SelectedClient.Notes;
+    var linked = Model.SelectedClient.LinkedToAgencyId == null || Model.SelectedClient.LinkedToAgencyId == 0 ? string.Empty : Model.SelectedClient.LinkedAgencyName;
+    <div id="contact-1" class="tab-pane active">
+        <div class="row m-b-lg">
+            <div class="col-lg-6 col-md-12 text-center">
+                <h2>@Model.SelectedClient.FirstName @Model.SelectedClient.LastName</h2>
+                <div class="m-b-sm">
+                    <img alt="image" class="img-circle" src="~/Images/user-face.jpg" style="width: 62px">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <strong>
+                    Notas
+                </strong>
+                <p>
+                    @notes
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    <i class="fa fa-birthday-cake"></i> @Model.SelectedClient.Birthday &nbsp;&nbsp;
+                    <i class="fa fa-phone"></i> @phone &nbsp;&nbsp;
+                    <i class="fa fa-envelope"></i> @email &nbsp;&nbsp;
+                    @if (linked != string.Empty)
+                    {
+                        <i class="fa fa-sitemap"></i> @linked
+                    }
+                </p>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-12 col-lg-3">
+                <a type="button" class="btn btn-primary btn-sm btn-block" href="@Url.Action("Edit", "Clients", new { ClientId = Model.SelectedClient.Id, ReturnUrl = Url.Action("Index", "Clients", new { AssignToReservationId = Model.AssignToReservationId }) })">
+                    <i class="fa fa-edit"></i> Modificar
+                </a>
+                <br />
+            </div>
+            <div class="col-sm-12 col-lg-6">
+                @if (IsCarReservationManager)
+                {
+                    if (Model.AssignToReservationId == -1)
+                    {
+                        <a class="btn btn-primary btn-sm btn-block" href="@Url.Action("Add", "CarReservations", new { ClientId = Model.SelectedClient.Id })">
+                            <i class="fa fa-plus"></i> Crear Reserva de Auto
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary btn-sm btn-block" href="@Url.Action("AssignClient", "CarReservations", new { CarReservationId = Model.AssignToReservationId, ClientId = Model.SelectedClient.Id })">
+                            <i class="fa fa-arrow-left"></i> Asignar a Reserva de Auto
+                        </a>
+                    }
+                }
+                <br />
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                @if (Model.SelectedClient.Activities.Count() == 0)
+                {
+                    <a class="btn btn-danger btn-sm btn-block" onclick="pageController.onClientRemoved(@Model.SelectedClient.Id)">
+                        <i class="fa fa-remove"></i> Eliminar
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-danger btn-sm btn-block  disabled">
+                        <i class="fa fa-remove"></i> Eliminar
+                    </a>
+                }
+                <br />
+            </div>
+        </div>
+        <br /><br />
+        <div class="client-detail">
+            <strong>Actividad</strong>
+            <ul class="list-group clear-list">
+                @{
+                    if (Model.SelectedClient.Activities.Count() == 0)
+                    {
+                        <p>
+                            No hay actividades que mostrar.
+                        </p>
+                    }
+                    else
+                    {
+                        var firstitem = "fist-item";
+                        foreach (ClientActivityModel activity in Model.SelectedClient.Activities)
+                        {
+                            var confirmed = activity.CarReservationNumber == string.Empty ? "No confirmada" : "Confirmada";
+                            <li class="list-group-item @firstitem">
+                                <span class="pull-right"> @activity.CarReservationCreatedOn </span>
+                                @if (activity.IsCarReservationActivity)
+                                {
+                                    <span class="fa fa-car">&nbsp;</span>
+                                }
+                                Reserva @confirmed, @activity.CarReservationCarCategory, @activity.CarReservationTotalDays días
+                            </li>
+                            if (firstitem != string.Empty) { firstitem = string.Empty; }
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+}

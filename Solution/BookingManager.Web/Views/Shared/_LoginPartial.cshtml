@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+@using BookingManager.Web.Helpers;
+
+@if (Request.IsAuthenticated)
+{
+    var identity = User.Identity.GetUserName().Split('|');
+    var agencyName = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.AgencyNameTagName);
+    var userFullname = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.UserFullnameTagNam);
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+<ul class="nav navbar-top-links navbar-right">
+    <li style="padding: 20px">
+        <span class="m-r-sm text-muted welcome-message">
+            <b>@agencyName</b>, hola @userFullname
+        </span>
+    </li>
+    <li>
+        <a href="javascript:document.getElementById('logoutForm').submit()">
+            <i class="fa fa-sign-out"></i>
+            Desconectarse
+        </a>
+    </li>
+</ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-top-links navbar-right">
+        <li>@Html.ActionLink("Conectarse", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

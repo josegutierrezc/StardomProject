@@ -1,0 +1,101 @@
+﻿@using BookingManager.Web.Models
+@using BookingManager.Web.Helpers;
+@model ClientViewModel
+
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var agencyname = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.AgencyNameTagName);
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-md-10">
+        <h2>
+            Adicionar cliente
+        </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">Tablero</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Clients")">Clientes</a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<br />
+<div class="row animated fadeInRight">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Detalles</h5>
+            </div>
+            <div>
+                <div class="ibox-content">
+                    @using (Html.BeginForm("Add", "Clients", FormMethod.Post, new { @id = "addForm" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(m => m.LinkedToAgencyId)
+                                @Html.DropDownListFor(m => m.LinkedToAgencyId, ViewData["LinkedAgencies"] as SelectList, agencyname.ToUpper(), new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FirstName)
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(m => m.LastName)
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(m => m.Birthday)
+                                <div class="input-group date" data-provide="datepicker">
+                                    @Html.TextBoxFor(m => m.Birthday, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                @Html.LabelFor(m => m.Phone)
+                                <input id="Phone" name="Phone" class="form-control" data-mask="(999) 999-9999" />
+                            </div>
+                            <div class="col-md-8">
+                                @Html.LabelFor(m => m.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Notes)
+                                @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center">
+                                <a class="btn btn-default" href="@Url.Action("Index", "Clients", new { AssignToReservationId = -1 })"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
+                                <a class="btn btn-primary" onclick="pageController.saveAndReturn(true);"><i class="fa fa-save"></i>&nbsp;&nbsp;Adicionar</a>
+                                <a class="btn btn-primary" onclick="pageController.saveAndCreateNewCarReservation(false);"><i class="fa fa-save"></i>&nbsp;&nbsp;Adicionar y asociar a nueva reserva</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/plugins/datePicker")
+@Scripts.Render("~/plugins/toastr")
+@Scripts.Render("~/plugins/jasny")
+@Scripts.Render("~/app/addclient")
+
+
+

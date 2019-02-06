@@ -1,0 +1,125 @@
+﻿@using BookingManager.Web.Models
+@using BookingManager.Web.Helpers
+@model ClientsLogViewModel
+
+@Html.HiddenFor(m => m.PageNumber)
+@Html.HiddenFor(m => m.PageSize)
+@Html.HiddenFor(m => m.TotalPages)
+@Html.HiddenFor(m => m.AssignToReservationId)
+
+@if (Model.Clients.Count() == 0)
+{
+    <br />
+    <span class="pull-right small text-muted">@Model.TotalResults clientes encontrados</span>
+    <br /><br />
+}
+else
+{
+    <br />
+    <span class="pull-right small text-muted">@Model.TotalResults clientes encontrados</span>
+    <br /><br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group content-centered">
+                @{
+                    var oneActive = Model.PageSize == 50 ? "active" : string.Empty;
+                    var twoActive = Model.PageSize == 100 ? "active" : string.Empty;
+                    var threeActive = Model.PageSize == 150 ? "active" : string.Empty;
+                    var fourActive = Model.PageSize == 200 ? "active" : string.Empty;
+                    var fiveActive = Model.PageSize == 250 ? "active" : string.Empty;
+                    var sixActive = Model.PageSize == 300 ? "active" : string.Empty;
+                    <button class="btn btn-white @oneActive" onclick="pageController.onActivePageSizeChanged(50);">50</button>
+                    <button class="btn btn-white @twoActive" onclick="pageController.onActivePageSizeChanged(100);">100</button>
+                    <button class="btn btn-white @threeActive" onclick="pageController.onActivePageSizeChanged(150);">150</button>
+                    <button class="btn btn-white @fourActive" onclick="pageController.onActivePageSizeChanged(200);">200</button>
+                    <button class="btn btn-white @fiveActive" onclick="pageController.onActivePageSizeChanged(250);">250</button>
+                    <button class="btn btn-white @sixActive" onclick="pageController.onActivePageSizeChanged(300);">300</button>
+                }
+                <button type="button" class="btn btn-white" onclick="pageController.onFirstPageSelected();"><i class="fa fa-step-backward"></i></button>
+                <button type="button" class="btn btn-white" onclick="pageController.onPreviousPageSelected();"><i class="fa fa-chevron-left"></i></button>
+                <div class="input-group">
+                    <input type="text" class="form-control" style="text-align:center" readonly value="Página @Model.PageNumber de @Model.TotalPages">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-white" onclick="pageController.onNextPageSelected();"><i class="fa fa-chevron-right"></i></button>
+                        <button type="button" class="btn btn-white" onclick="pageController.onLastPageSelected();"><i class="fa fa-step-forward"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br />
+    </div>
+
+    <br />
+    <table class="table table-striped table-hover toggle-arrow-tiny footable-loaded phone breakpoint">
+        <thead>
+            <tr>
+                <th data-breakpoints="xs"></th>
+                <th></th>
+                <th data-breakpoints="xs"></th>
+                <th data-breakpoints="xs"></th>
+                <th data-breakpoints="xs"></th>
+                <th data-breakpoints="xs"></th>
+                <th data-breakpoints="xs"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i <= Model.Clients.Count() - 1; i++)
+            {
+                var rowId = "row" + Model.Clients[i].Id;
+            <tr id="@rowId" class="clickable" onclick="pageController.onClientSelected(@Model.Clients[i].Id)">
+                <td class="client-avatar"><img alt="image" src="~/Images/user-face.jpg"></td>
+                <td><a data-toggle="tab" href="#contact-1" class="client-link">@Model.Clients[i].FirstName @Model.Clients[i].LastName</a></td>
+                <td class="contact-type"><i class="fa fa-phone"></i> </td>
+                <td>@ApplicationHelper.Instance.FormatPhoneNumber(@Model.Clients[i].Phone, false).Value</td>
+                <td class="contact-type"><i class="fa fa-envelope"></i> </td>
+                <td>@Model.Clients[i].Email</td>
+                @if (Model.Clients[i].LinkedToAgencyId == null || Model.Clients[i].LinkedToAgencyId == 0)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td><i class="fa fa-sitemap"></i> @Model.Clients[i].LinkedAgencyName</td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group content-centered">
+                @{
+                    <button class="btn btn-white @oneActive" onclick="pageController.onActivePageSizeChanged(50);">50</button>
+                    <button class="btn btn-white @twoActive" onclick="pageController.onActivePageSizeChanged(100);">100</button>
+                    <button class="btn btn-white @threeActive" onclick="pageController.onActivePageSizeChanged(150);">150</button>
+                    <button class="btn btn-white @fourActive" onclick="pageController.onActivePageSizeChanged(200);">200</button>
+                    <button class="btn btn-white @fiveActive" onclick="pageController.onActivePageSizeChanged(250);">250</button>
+                    <button class="btn btn-white @sixActive" onclick="pageController.onActivePageSizeChanged(300);">300</button>
+                }
+                <button type="button" class="btn btn-white" onclick="pageController.onFirstPageSelected();"><i class="fa fa-step-backward"></i></button>
+                <button type="button" class="btn btn-white" onclick="pageController.onPreviousPageSelected();"><i class="fa fa-chevron-left"></i></button>
+                <div class="input-group">
+                    <input type="text" class="form-control" style="text-align:center" readonly value="Página @Model.PageNumber de @Model.TotalPages">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-white" onclick="pageController.onNextPageSelected();"><i class="fa fa-chevron-right"></i></button>
+                        <button type="button" class="btn btn-white" onclick="pageController.onLastPageSelected();"><i class="fa fa-step-forward"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br />
+    </div>
+}
+
+<style>
+    .content-centered {
+        position: relative;
+        margin-left: 23%;
+        margin-right: 23%;
+    }
+    .clickable {
+        cursor:pointer;
+    }
+</style>

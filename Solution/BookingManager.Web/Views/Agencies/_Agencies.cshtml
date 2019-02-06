@@ -1,0 +1,39 @@
+﻿@using BookingManager.Web.Models
+@model AgenciesViewModel
+
+@Html.HiddenFor(m => m.ErrorDescription)
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Contacto</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.TextBoxFor(m => m.NewName, new { @class = "form-control", @placeholder = "Nombre de agencia" })</td>
+            <td>@Html.TextBoxFor(m => m.NewContact, new { @class = "form-control", @placeholder = "Nombre del contacto" })</td>
+            <td>@Html.TextBoxFor(m => m.NewPhone, new { @class = "form-control", @placeholder = "Teléfono" })</td>
+            <td>@Html.TextBoxFor(m => m.NewEmail, new { @class = "form-control", @placeholder = "Email" })</td>
+            <td style="vertical-align:middle;">
+                <a onclick="pageController.addLinkedAgency();"><span class="fa fa-plus"></span> Adicionar</a>
+            </td>
+        </tr>
+        @for (int i = 0; i <= Model.LinkedAgencies.Count() - 1; i++)
+        {
+            <tr>
+                <td>@Html.TextBoxFor(m => m.LinkedAgencies[i].Name, new { @class = "form-control", @placeholder = "Nombre de agencia" })</td>
+                <td>@Html.TextBoxFor(m => m.LinkedAgencies[i].ContactName, new { @class = "form-control", @placeholder = "Nombre del contacto" })</td>
+                <td>@Html.TextBoxFor(m => m.LinkedAgencies[i].Phone, new { @class = "form-control", @placeholder = "Teléfono" })</td>
+                <td>@Html.TextBoxFor(m => m.LinkedAgencies[i].Email, new { @class = "form-control", @placeholder = "Email" })</td>
+                <td style="vertical-align:middle;">
+                    <a onclick="pageController.updateLinkedAgency(@i, @Model.LinkedAgencies[i].Id)"><span class="fa fa-edit"></span> Actualizar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br /><br />

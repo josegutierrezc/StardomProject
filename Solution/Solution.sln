@@ -1,0 +1,106 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsManager.DL", "AppsManager.DL\AppsManager.DL.csproj", "{B79B9D9A-DC23-4CDF-85CD-4916DB087B53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsManager.DTO", "AppsManager.DTO\AppsManager.DTO.csproj", "{04190930-4FDA-493B-B100-A998C56B25D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars.DL", "Cars.DL\Cars.DL.csproj", "{F3670277-A421-460E-86DE-4B2DBF71E5C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars.DTO", "Cars.DTO\Cars.DTO.csproj", "{C2F8A830-9260-478B-AF6B-332EE1783207}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars.REST", "Cars.REST\Cars.REST.csproj", "{5B08A4CB-2962-4A96-B3C7-3B8FE13EDAF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingManager.Web", "BookingManager.Web\BookingManager.Web.csproj", "{E03C086A-EDDD-4178-A861-FAC5FA32DD88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars.REST.Client", "Cars.REST.Client\Cars.REST.Client.csproj", "{87A60624-C954-483B-B50D-23FCF7BB4129}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cars.Reports", "Cars.Reports\Cars.Reports.csproj", "{C32F5ADD-FF7D-4515-B356-D8C3F1D7E6C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solution.Tests", "Solution.Tests\Solution.Tests.csproj", "{27D3B966-8F77-4446-87C6-68AE4A60DBF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B79B9D9A-DC23-4CDF-85CD-4916DB087B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79B9D9A-DC23-4CDF-85CD-4916DB087B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79B9D9A-DC23-4CDF-85CD-4916DB087B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79B9D9A-DC23-4CDF-85CD-4916DB087B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04190930-4FDA-493B-B100-A998C56B25D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04190930-4FDA-493B-B100-A998C56B25D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04190930-4FDA-493B-B100-A998C56B25D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04190930-4FDA-493B-B100-A998C56B25D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3670277-A421-460E-86DE-4B2DBF71E5C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3670277-A421-460E-86DE-4B2DBF71E5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3670277-A421-460E-86DE-4B2DBF71E5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3670277-A421-460E-86DE-4B2DBF71E5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F8A830-9260-478B-AF6B-332EE1783207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F8A830-9260-478B-AF6B-332EE1783207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F8A830-9260-478B-AF6B-332EE1783207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F8A830-9260-478B-AF6B-332EE1783207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B08A4CB-2962-4A96-B3C7-3B8FE13EDAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B08A4CB-2962-4A96-B3C7-3B8FE13EDAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B08A4CB-2962-4A96-B3C7-3B8FE13EDAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B08A4CB-2962-4A96-B3C7-3B8FE13EDAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03C086A-EDDD-4178-A861-FAC5FA32DD88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03C086A-EDDD-4178-A861-FAC5FA32DD88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03C086A-EDDD-4178-A861-FAC5FA32DD88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03C086A-EDDD-4178-A861-FAC5FA32DD88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87A60624-C954-483B-B50D-23FCF7BB4129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A60624-C954-483B-B50D-23FCF7BB4129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A60624-C954-483B-B50D-23FCF7BB4129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A60624-C954-483B-B50D-23FCF7BB4129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C32F5ADD-FF7D-4515-B356-D8C3F1D7E6C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C32F5ADD-FF7D-4515-B356-D8C3F1D7E6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C32F5ADD-FF7D-4515-B356-D8C3F1D7E6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C32F5ADD-FF7D-4515-B356-D8C3F1D7E6C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D3B966-8F77-4446-87C6-68AE4A60DBF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D3B966-8F77-4446-87C6-68AE4A60DBF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D3B966-8F77-4446-87C6-68AE4A60DBF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D3B966-8F77-4446-87C6-68AE4A60DBF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A1F6423-41F6-48A2-903D-E88ADC6E2D53}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 10
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://gammausa.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AppsManager.DL\\AppsManager.DL.csproj
+		SccProjectName1 = AppsManager.DL
+		SccLocalPath1 = AppsManager.DL
+		SccProjectUniqueName2 = AppsManager.DTO\\AppsManager.DTO.csproj
+		SccProjectName2 = AppsManager.DTO
+		SccLocalPath2 = AppsManager.DTO
+		SccProjectUniqueName3 = Cars.DL\\Cars.DL.csproj
+		SccProjectName3 = Cars.DL
+		SccLocalPath3 = Cars.DL
+		SccProjectUniqueName4 = Cars.DTO\\Cars.DTO.csproj
+		SccProjectName4 = Cars.DTO
+		SccLocalPath4 = Cars.DTO
+		SccProjectUniqueName5 = Cars.REST\\Cars.REST.csproj
+		SccProjectName5 = Cars.REST
+		SccLocalPath5 = Cars.REST
+		SccProjectUniqueName6 = BookingManager.Web\\BookingManager.Web.csproj
+		SccProjectName6 = BookingManager.Web
+		SccLocalPath6 = BookingManager.Web
+		SccProjectUniqueName7 = Cars.REST.Client\\Cars.REST.Client.csproj
+		SccProjectName7 = Cars.REST.Client
+		SccLocalPath7 = Cars.REST.Client
+		SccProjectUniqueName8 = Cars.Reports\\Cars.Reports.csproj
+		SccProjectName8 = Cars.Reports
+		SccLocalPath8 = Cars.Reports
+		SccProjectUniqueName9 = Solution.Tests\\Solution.Tests.csproj
+		SccProjectName9 = Solution.Tests
+		SccLocalPath9 = Solution.Tests
+	EndGlobalSection
+EndGlobal
