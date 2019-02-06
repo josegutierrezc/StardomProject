@@ -52,13 +52,15 @@ namespace Cars.Reports
             toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
 
             //Load Agency
-            AgenciesManager ageMan = new AgenciesManager();
-            agency = ageMan.GetByNumber(AgencyNumber);
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                AgenciesManager ageMan = new AgenciesManager(DB);
+                agency = ageMan.GetByNumber(AgencyNumber);
 
-            //Load Payment Methods
-            PaymentMethodsManager payMan = new PaymentMethodsManager();
-            paymentTypes = payMan.GetReportOfPaymentTypesPerPeriod(AgencyNumber, fromDate, toDate);
-            totalPaymentTypes = paymentTypes.Count();
+                //Load Payment Methods
+                PaymentMethodsManager payMan = new PaymentMethodsManager();
+                paymentTypes = payMan.GetReportOfPaymentTypesPerPeriod(AgencyNumber, fromDate, toDate);
+                totalPaymentTypes = paymentTypes.Count();
+            }
         }
         protected override object Pdf(bool IsImplemented)
         {

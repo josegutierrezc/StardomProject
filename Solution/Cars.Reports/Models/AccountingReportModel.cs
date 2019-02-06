@@ -61,34 +61,38 @@ namespace Cars.Reports
             toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
 
             //Load Agency
-            AgenciesManager ageMan = new AgenciesManager();
-            agency = ageMan.GetByNumber(AgencyNumber);
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                AgenciesManager ageMan = new AgenciesManager(DB);
+                agency = ageMan.GetByNumber(AgencyNumber);
 
-            //Load AccountingReport
-            CarReservationsManager carsMan = new CarReservationsManager();
-            KeyValuePair<int, List<CarReservationExtension>> result = carsMan.GetAccountingReport(AgencyNumber, fromDate, toDate, touroperatorid, paymentstatusid);
-            totalReservations = result.Key;
-            reservations = result.Value;
+                //Load AccountingReport
+                CarReservationsManager carsMan = new CarReservationsManager();
+                KeyValuePair<int, List<CarReservationExtension>> result = carsMan.GetAccountingReport(AgencyNumber, fromDate, toDate, touroperatorid, paymentstatusid);
+                totalReservations = result.Key;
+                reservations = result.Value;
 
-            //Create a Tip Dictionary
-            CarReservationPaymentsManager payMan = new CarReservationPaymentsManager();
-            tipDictionary = new Dictionary<long, double>();
-            foreach (CarReservationExtension r in reservations) {
-                double totaltip = 0;
-                foreach (PaymentExtension p in payMan.Get(AgencyNumber, r.Id))
-                    if (p.ConceptId == 2) { totaltip += p.Amount; } 
-                tipDictionary.Add(r.Id, totaltip);
+                //Create a Tip Dictionary
+                CarReservationPaymentsManager payMan = new CarReservationPaymentsManager();
+                tipDictionary = new Dictionary<long, double>();
+                foreach (CarReservationExtension r in reservations)
+                {
+                    double totaltip = 0;
+                    foreach (PaymentExtension p in payMan.Get(AgencyNumber, r.Id))
+                        if (p.ConceptId == 2) { totaltip += p.Amount; }
+                    tipDictionary.Add(r.Id, totaltip);
+                }
+
+                //Define TourOperator Name if apply
+                touroperatorname = "Todos incluidos";
+                if (touroperatorid != -1)
+                {
+                    TourOperatorsManager tourMan = new TourOperatorsManager();
+                    touroperatorname = tourMan.GetById(AgencyNumber, touroperatorid).Name;
+                }
+
+                //Define PaymentStatus Name
+                paymentstatusname = paymentstatusid == -1 ? CarReservationsManager.PaymentStatusAllName + " incluidos" : CarReservationsManager.PaymentStatusNames[paymentstatusid];
             }
-
-            //Define TourOperator Name if apply
-            touroperatorname = "Todos incluidos";
-            if (touroperatorid != -1) {
-                TourOperatorsManager tourMan = new TourOperatorsManager();
-                touroperatorname = tourMan.GetById(AgencyNumber, touroperatorid).Name;
-            }
-
-            //Define PaymentStatus Name
-            paymentstatusname = paymentstatusid == -1 ? CarReservationsManager.PaymentStatusAllName + " incluidos" : CarReservationsManager.PaymentStatusNames[paymentstatusid];
         }
         protected override object Pdf(bool IsImplemented)
         {

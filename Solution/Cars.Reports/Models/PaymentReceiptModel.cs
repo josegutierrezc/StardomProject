@@ -48,18 +48,20 @@ namespace Cars.Reports
             }
 
             //Load Agency
-            AgenciesManager ageMan = new AgenciesManager();
-            agency = ageMan.GetByNumber(AgencyNumber);
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                AgenciesManager ageMan = new AgenciesManager(DB);
+                agency = ageMan.GetByNumber(AgencyNumber);
 
-            //Load Car Reservation
-            CarReservationsManager carsMan = new CarReservationsManager();
-            entity = carsMan.GetById(AgencyNumber, carReservationId);
-            entity.ToDate = new DateTime(entity.ToDate.Year, entity.ToDate.Month, entity.ToDate.Day, entity.FromDate.Hour, entity.FromDate.Minute, entity.FromDate.Second);
-            entity.Days = entity.ToDate.Subtract(entity.FromDate).Days;
+                //Load Car Reservation
+                CarReservationsManager carsMan = new CarReservationsManager();
+                entity = carsMan.GetById(AgencyNumber, carReservationId);
+                entity.ToDate = new DateTime(entity.ToDate.Year, entity.ToDate.Month, entity.ToDate.Day, entity.FromDate.Hour, entity.FromDate.Minute, entity.FromDate.Second);
+                entity.Days = entity.ToDate.Subtract(entity.FromDate).Days;
 
-            //Load Payments
-            CarReservationPaymentsManager payMan = new CarReservationPaymentsManager();
-            payments = payMan.Get(AgencyNumber, entity.Id);
+                //Load Payments
+                CarReservationPaymentsManager payMan = new CarReservationPaymentsManager();
+                payments = payMan.Get(AgencyNumber, entity.Id);
+            }
         }
         protected override object Pdf(bool IsImplemented)
         {

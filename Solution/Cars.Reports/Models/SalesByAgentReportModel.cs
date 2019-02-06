@@ -51,41 +51,45 @@ namespace Cars.Reports
             toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
 
             //Load Agency
-            AgenciesManager ageMan = new AgenciesManager();
-            agency = ageMan.GetByNumber(AgencyNumber);
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                AgenciesManager ageMan = new AgenciesManager(DB);
+                agency = ageMan.GetByNumber(AgencyNumber);
 
-            //Load Payment Methods
-            UsersManager userMan = new UsersManager();
-            PaymentMethodsManager payMan = new PaymentMethodsManager();
-            List<AgentSalesSummary> salesbyAgent = payMan.GetReportOfSalesByAgent(AgencyNumber, fromDate, toDate);
-            sales = new SortedDictionary<string, SortedDictionary<string, SaleAmounts>>();
-            foreach (AgentSalesSummary sale in salesbyAgent) {
-                User u = userMan.GetById(sale.AgentId);
-                DateTime toDate = new DateTime(sale.ToDate.Year, sale.ToDate.Month, sale.ToDate.Day, sale.FromDate.Hour, sale.FromDate.Minute, sale.FromDate.Second);
-                int days = toDate.Subtract(sale.FromDate).Days;
-                double potentialAmount = sale.SalePrice * days - sale.Discount * days;
-
-                sale.AgentFullname = u.FirstName + " " + u.LastName;
-                sale.Days = days;
-                sale.PotentialAmount = potentialAmount;
-
-                SortedDictionary<string, SaleAmounts> agentAmounts;
-                if (!sales.TryGetValue(sale.AgentFullname, out agentAmounts)) {
-                    agentAmounts = new SortedDictionary<string, SaleAmounts>();
-                    sales.Add(sale.AgentFullname, agentAmounts);
-                }
-
-                if (agentAmounts.ContainsKey(sale.PaymentMethodName))
+                //Load Payment Methods
+                UsersManager userMan = new UsersManager();
+                PaymentMethodsManager payMan = new PaymentMethodsManager();
+                List<AgentSalesSummary> salesbyAgent = payMan.GetReportOfSalesByAgent(AgencyNumber, fromDate, toDate);
+                sales = new SortedDictionary<string, SortedDictionary<string, SaleAmounts>>();
+                foreach (AgentSalesSummary sale in salesbyAgent)
                 {
-                    agentAmounts[sale.PaymentMethodName].PotentialAmount += sale.PotentialAmount;
-                    agentAmounts[sale.PaymentMethodName].PotentialAmount += sale.PaidAmount;
-                }
-                else
-                    agentAmounts.Add(sale.PaymentMethodName, new SaleAmounts()
+                    User u = userMan.GetById(sale.AgentId);
+                    DateTime toDate = new DateTime(sale.ToDate.Year, sale.ToDate.Month, sale.ToDate.Day, sale.FromDate.Hour, sale.FromDate.Minute, sale.FromDate.Second);
+                    int days = toDate.Subtract(sale.FromDate).Days;
+                    double potentialAmount = sale.SalePrice * days - sale.Discount * days;
+
+                    sale.AgentFullname = u.FirstName + " " + u.LastName;
+                    sale.Days = days;
+                    sale.PotentialAmount = potentialAmount;
+
+                    SortedDictionary<string, SaleAmounts> agentAmounts;
+                    if (!sales.TryGetValue(sale.AgentFullname, out agentAmounts))
                     {
-                        PotentialAmount = sale.PotentialAmount,
-                        PaidAmount = sale.PaidAmount
-                    });
+                        agentAmounts = new SortedDictionary<string, SaleAmounts>();
+                        sales.Add(sale.AgentFullname, agentAmounts);
+                    }
+
+                    if (agentAmounts.ContainsKey(sale.PaymentMethodName))
+                    {
+                        agentAmounts[sale.PaymentMethodName].PotentialAmount += sale.PotentialAmount;
+                        agentAmounts[sale.PaymentMethodName].PotentialAmount += sale.PaidAmount;
+                    }
+                    else
+                        agentAmounts.Add(sale.PaymentMethodName, new SaleAmounts()
+                        {
+                            PotentialAmount = sale.PotentialAmount,
+                            PaidAmount = sale.PaidAmount
+                        });
+                }
             }
         }
         protected override object Pdf(bool IsImplemented)
