@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BookingManager.Web.Controllers
 {
+    [Authorize]
     public class AgenciesController : Controller
     {
         // GET: Agencies

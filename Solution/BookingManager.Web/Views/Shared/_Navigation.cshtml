@@ -45,6 +45,9 @@
             <li class="@Html.IsSelected(controller: "CarReports", action: "Index")">
                 <a href="@Url.Action("Index", "CarReports")"><i class="fa fa-clipboard"></i> <span class="nav-label">Reportes</span></a>
             </li>
+            <li class="@Html.IsSelected(controller: "Agents", action: "Index")">
+                <a href="@Url.Action("Index", "Agents")"><i class="fa fa-user"></i> <span class="nav-label">Agentes</span></a>
+            </li>
         </ul>
     </div>
 </nav>

@@ -183,6 +183,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgenciesController.cs" />
+    <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\CarPriceConfigurationController.cs" />
     <Compile Include="Controllers\CarReportsController.cs" />
     <Compile Include="Controllers\CarReservationsController.cs" />
@@ -359,6 +360,7 @@
     <Content Include="Views\CarReports\_ReportFilters.cshtml" />
     <Content Include="Views\CarReservations\_HistoryReservations.cshtml" />
     <Content Include="Views\Agencies\_Agencies.cshtml" />
+    <Content Include="Views\Agents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
