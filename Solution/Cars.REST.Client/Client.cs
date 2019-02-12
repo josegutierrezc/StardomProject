@@ -45,6 +45,25 @@ namespace Cars.REST.Client
                 return users;
             }
         }
+        public async Task<List<UserDTO>> GetAgencyUsers(string AgencyNumber)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                List<UserDTO> users = null;
+                HttpResponseMessage response = await client.GetAsync("api/v1/agencies/" + AgencyNumber + "/users");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    users = JsonConvert.DeserializeObject<List<UserDTO>>(jsonData);
+                }
+
+                return users;
+            }
+        }
         public async Task<UserDTO> GetUser(string Username)
         {
             using (var client = new HttpClient())
@@ -82,6 +101,25 @@ namespace Cars.REST.Client
                 }
 
                 return agencies;
+            }
+        }
+        public async Task<List<PrivilegeDTO>> GetUserPrivileges(string AgencyNumber, string Username)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                List<PrivilegeDTO> entities = new List<PrivilegeDTO>();
+                HttpResponseMessage response = await client.GetAsync("api/v1/agencies/" + AgencyNumber + "/users/" + Username + "/privileges");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    entities = JsonConvert.DeserializeObject<List<PrivilegeDTO>>(jsonData);
+                }
+
+                return entities;
             }
         }
         public async Task<string> GetUserPrivilegesString(string AgencyNumber, string Username)
@@ -976,6 +1014,60 @@ namespace Cars.REST.Client
                     entities = JsonConvert.DeserializeObject<List<PaymentStatusDTO>>(jsonData);
                 }
                 return entities;
+            }
+        }
+        #endregion
+
+        #region Privileges
+        public async Task<List<PrivilegeDTO>> GetAllPrivileges(string AgencyNumber)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                List<PrivilegeDTO> entities = null;
+                HttpResponseMessage response = await client.GetAsync("api/v1/agencies/" + AgencyNumber + "/privileges");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    entities = JsonConvert.DeserializeObject<List<PrivilegeDTO>>(jsonData);
+                }
+
+                return entities;
+            }
+        }
+        public async Task<bool> SetUserPrivilege(string AgencyNumber, string Username, string PrivilegeName, bool IsSelected)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                if (IsSelected)
+                {
+                    UserPrivilegeDTO dto = new UserPrivilegeDTO()
+                    {
+                        Username = Username,
+                        PrivilegeName = PrivilegeName
+                    };
+
+                    string url = "api/v1/agencies/" + AgencyNumber + "/users/" + Username + "/privileges";
+                    var jsonData = JsonConvert.SerializeObject(dto);
+                    using (HttpContent content = new StringContent(jsonData))
+                    {
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        HttpResponseMessage response = await client.PostAsync(url, content);
+                        return response.IsSuccessStatusCode;
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = await client.DeleteAsync("api/v1/agencies/" + AgencyNumber + "/users/" + Username + "/privileges/" + PrivilegeName);
+                    return response.IsSuccessStatusCode;
+                }
             }
         }
         #endregion

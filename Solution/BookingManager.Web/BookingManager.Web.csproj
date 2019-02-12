@@ -196,6 +196,7 @@
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgencyViewModel.cs" />
+    <Compile Include="Models\AgentsViewModel.cs" />
     <Compile Include="Models\ClientActivityModel.cs" />
     <Compile Include="Models\CarReservationsLogModel.cs" />
     <Compile Include="Models\CarReservationViewModel.cs" />
@@ -250,6 +251,7 @@
     <Content Include="Images\client-profile.jpg" />
     <Content Include="Images\user-face.jpg" />
     <Content Include="Scripts\app\addcarreservation.js" />
+    <Content Include="Scripts\app\agents.js" />
     <Content Include="Scripts\app\linkedagencies.js" />
     <Content Include="Scripts\app\carreports.js" />
     <Content Include="Scripts\app\addclient.js" />
@@ -361,6 +363,8 @@
     <Content Include="Views\CarReservations\_HistoryReservations.cshtml" />
     <Content Include="Views\Agencies\_Agencies.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
+    <Content Include="Views\Agents\_Agents.cshtml" />
+    <Content Include="Views\Agents\_AgentDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,8 +1,53 @@
-﻿
+﻿@using BookingManager.Web.Models
+@model AgentsViewModel
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Agentes</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a>Tablero</a>
+            </li>
+            <li class="active">
+                <strong>Agentes</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-xs-12 col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <a class="btn btn-sm btn-primary pull-right" href="@Url.Action("Add", "Agents")"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar agente</a>
+                    <h2>Agentes</h2>
+                    <div id="divAgents">
+                        @Html.Partial("_Agents", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-lg-8">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div id="divAgentDetails">
+                        @Html.Partial("_AgentDetails", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/plugins/toastr")
+@Scripts.Render("~/app/agents")
 

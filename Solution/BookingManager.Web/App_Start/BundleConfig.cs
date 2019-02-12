@@ -98,6 +98,8 @@ namespace BookingManager.Web
                       "~/Scripts/app/index.js"));
             bundles.Add(new ScriptBundle("~/app/linkedagencies").Include(
                       "~/Scripts/app/linkedagencies.js"));
+            bundles.Add(new ScriptBundle("~/app/agents").Include(
+                      "~/Scripts/app/agents.js"));
 
             //DEFAULT STUFF CREATED
             //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

@@ -1,0 +1,36 @@
+﻿@using BookingManager.Web.Models
+@model AgentsViewModel
+
+@if (Model.Agents.Count() == 0)
+{
+    <br />
+    <span class="pull-right small text-muted">No se encontraron agentes asociados a esta agencia.</span>
+    <br /><br />
+}
+else
+{
+    <br />
+    <table class="table table-striped table-hover toggle-arrow-tiny footable-loaded phone breakpoint">
+        <thead>
+            <tr>
+                <th data-breakpoints="xs"></th>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i <= Model.Agents.Count() - 1; i++)
+            {
+                var rowId = "row" + Model.Agents[i].Username;
+                var forecolor = Model.Agents[i].IsActive ? "#676A6C" : "red";
+                <tr id="@rowId" class="clickable" style="cursor:pointer;" onclick="pageController.onAgentSelected('@Model.Agents[i].Username')">
+                    <td class="client-avatar"><img alt="image" src="~/Images/user-face.jpg"></td>
+                    <td style="color:@forecolor;"><b>@Model.Agents[i].Username</b></td>
+                    <td style="color:@forecolor;">@Model.Agents[i].Firstname</td>
+                    <td style="color:@forecolor;">@Model.Agents[i].Lastname</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

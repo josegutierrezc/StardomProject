@@ -1,0 +1,123 @@
+﻿@using BookingManager.Web.Models
+@model AgentsViewModel
+
+@{
+    var IsUserManager = User.IsInRole("sysadmin") | User.IsInRole("usermanager") ? true : false;
+}
+
+@if (IsUserManager)
+{
+    if (Model.SelectedAgent == null)
+    {
+        <h3>Nada para mostrar en este panel.</h3>
+        <p>
+            Usted no ve ningún tipo de información en este panel porque no hay ningún agente seleccionado.
+        </p>
+    }
+    else
+    {
+        using (Html.BeginForm("Update", "Agent", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <h2><small>GENERAL</small></h2>
+                    <hr style="margin-top:0px;" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="checkbox m-r-xs">
+                        @if (Model.SelectedAgent.IsActive)
+                        {
+                            <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" checked="checked" />
+                        }
+                        else
+                        {
+                            {
+                                <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" />
+                            }
+                        }
+                        <label for="SelectedAgent_IsActive">Activo</label>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.SelectedAgent.Username)
+                    @Html.TextBoxFor(m => m.SelectedAgent.Username, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.SelectedAgent.Firstname)
+                    @Html.TextBoxFor(m => m.SelectedAgent.Firstname, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SelectedAgent.Firstname)
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.SelectedAgent.Lastname)
+                    @Html.TextBoxFor(m => m.SelectedAgent.Lastname, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <br /><br />
+            <div class="row">
+                <div class="col-md-12">
+                    <h2><small>PERMISOS</small></h2>
+                    <hr style="margin-top:0px;" />
+                </div>
+            </div>
+
+            for (int i = 0; i <= Model.SelectedAgent.Privileges.Count() - 1; i++)
+            {
+                var id = "SelectedAgent_Privileges_" + i + "__IsActive";
+                var name = "SelectedAgent.Privileges[" + i + "].IsActive";
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox m-r-xs">
+                            @if (Model.SelectedAgent.Privileges[i].IsSelected)
+                            {
+                                <input id="@id" name="@name" type="checkbox" checked="checked" onchange="pageController.onPrivilegeChanged('@Model.SelectedAgent.Username','@Model.SelectedAgent.Privileges[i].Name',true)" />
+                            }
+                            else
+                            {
+                                <input id="@id" name="@name" type="checkbox" onchange="pageController.onPrivilegeChanged('@Model.SelectedAgent.Username','@Model.SelectedAgent.Privileges[i].Name',false)" />
+                            }
+                            <label for="@id">@Model.SelectedAgent.Privileges[i].Description</label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <br /><br />
+            <div class="row">
+                <div class="col-md-12">
+                    <h2><small>CONTRASEÑA</small></h2>
+                    <hr style="margin-top:0px;" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.SelectedAgent.Password)
+                    @Html.PasswordFor(m => m.SelectedAgent.Password, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.SelectedAgent.RetypedPassword)
+                    @Html.PasswordFor(m => m.SelectedAgent.RetypedPassword, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <a class="btn btn-sm btn-success">Modificar</a>
+                </div>
+            </div>
+        }
+    }
+}
+else
+{
+    <h3>Nada para mostrar en este panel.</h3>
+    <p class="text-danger">
+        Usted no tiene el permiso requerido para modificar la información de los agentes.
+    </p>
+}

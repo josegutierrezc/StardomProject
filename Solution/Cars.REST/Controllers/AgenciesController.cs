@@ -493,10 +493,13 @@ namespace Cars.REST.Controllers
                 if (user == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "User " + username + " does not exists.");
 
-                PrivilegesManager priMan = new PrivilegesManager();
-                List<Privilege> privileges = priMan.GetByUser(agencynumber, user.Id);
+                using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber))
+                {
+                    PrivilegesManager priMan = new PrivilegesManager(CarsDB);
+                    List<Privilege> privileges = priMan.GetByUser(user.Id);
 
-                return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<List<Privilege>, List<PrivilegeDTO>>(privileges));
+                    return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<List<Privilege>, List<PrivilegeDTO>>(privileges));
+                }
             }
         }
 
@@ -519,13 +522,14 @@ namespace Cars.REST.Controllers
             if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
 
             //Assign Privilege
-            PrivilegesManager priMan = new PrivilegesManager();
-            bool assigned = priMan.AssignToUser(agencynumber, user.Id, dto.PrivilegeName);
-
-            return assigned ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest, "An error occurred trying to assign this privilege to the user " + dto.Username);
+            using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber)) {
+                PrivilegesManager priMan = new PrivilegesManager(CarsDB);
+                bool assigned = priMan.AssignToUser(user.Id, dto.PrivilegeName);
+                return assigned ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest, "An error occurred trying to assign this privilege to the user " + dto.Username);
+            }
         }
-        [Route("api/v1/agencies/{agencynumber}/users/{username}/privileges/{privilegename}")]
 
+        [Route("api/v1/agencies/{agencynumber}/users/{username}/privileges/{privilegename}")]
         [HttpDelete]
         public HttpResponseMessage DeletePrivilege(string agencynumber, string username, string privilegename)
         {
@@ -538,10 +542,11 @@ namespace Cars.REST.Controllers
             if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
 
             //Assign Privilege
-            PrivilegesManager priMan = new PrivilegesManager();
-            bool unassigned = priMan.UnassignFromUser(agencynumber, user.Id, privilegename);
-
-            return unassigned ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest, "An error occurred trying to unassign this privilege from the user " + username);
+            using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber)) {
+                PrivilegesManager priMan = new PrivilegesManager(CarsDB);
+                bool unassigned = priMan.UnassignFromUser(user.Id, privilegename);
+                return unassigned ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest, "An error occurred trying to unassign this privilege from the user " + username);
+            }
         }
 
         #endregion
@@ -767,6 +772,27 @@ namespace Cars.REST.Controllers
                 bool updated = priMan.Update(agencynumber, touroperatorid, seasonid, userId, Mapper.Map<List<PriceConfigurationDTO>, List<PriceConfiguration>>(configuration));
 
                 return updated ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+        #endregion
+
+        #region Privileges
+        [Route("api/v1/agencies/{agencynumber}/privileges")]
+        [HttpGet]
+        public HttpResponseMessage GetAllPrivileges(string agencynumber)
+        {
+            using (var DB = AppsManagerModel.ConnectToSqlServer())
+            {
+                AgenciesManager man = new AgenciesManager(DB);
+                Agency agency = man.GetByNumber(agencynumber);
+                if (agency == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
+
+                using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber))
+                {
+                    PrivilegesManager priMan = new PrivilegesManager(CarsDB);
+                    return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<List<Privilege>, List<PrivilegeDTO>>(priMan.GetAll()));
+                }
             }
         }
         #endregion

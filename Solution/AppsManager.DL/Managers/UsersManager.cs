@@ -44,7 +44,10 @@ namespace AppsManager.DL
                             where a.Number == AgencyNumber
                             select new UserAgencyHelper
                             {
+                                Firstname = u.FirstName,
+                                Lastname = u.LastName,
                                 Username = u.Username,
+                                IsActive = u.IsActive,
                                 AgencyNumber = a.Number
                             };
                 return query.ToList();
