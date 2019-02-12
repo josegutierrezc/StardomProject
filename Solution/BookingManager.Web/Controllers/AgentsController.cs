@@ -71,5 +71,10 @@ namespace BookingManager.Web.Controllers
             bool setted = await Client.Instance.SetUserPrivilege(agencyNumber, Username, PrivilegeName, !IsSelected);
             return Json(new { Success = setted });
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Update(AgentsViewModel Model) {
+            return Json(new { Success = true });
+        }
     }
 }

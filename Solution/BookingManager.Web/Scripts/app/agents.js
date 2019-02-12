@@ -35,3 +35,23 @@ PageController.prototype.onPrivilegeChanged = function (username, privilegename,
         }
     });
 }
+
+PageController.prototype.onSubmit = function () {
+    var form = $('#formDetails');
+    var formData = form.serialize();
+
+    $.ajax({
+        url: '/Agents/Update',
+        traditional: true,
+        data: formData,
+        method: 'POST',
+        success: function (data) {
+            if (data.Success) {
+                toastr.success("Los cambios se han realizado satisfactoriamente", "Perfecto!");
+            }
+            else {
+                toastr.error("Ha ocurrido un error al intentar modificar a este agente.", "Oops!!")
+            }
+        }
+    });
+}

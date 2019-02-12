@@ -16,7 +16,7 @@
     }
     else
     {
-        using (Html.BeginForm("Update", "Agent", FormMethod.Post))
+        using (Html.BeginForm("Update", "Agent", FormMethod.Post, new { @id = "formDetails" }))
         {
             <div class="row">
                 <div class="col-md-12">
@@ -29,14 +29,13 @@
                     <div class="checkbox m-r-xs">
                         @if (Model.SelectedAgent.IsActive)
                         {
-                            <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" checked="checked" />
+                            <input checked="checked" data-val="true" data-val-required="The Activo field is required." id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="true">
                         }
                         else
                         {
-                            {
-                                <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" />
-                            }
+                            <input data-val="false" data-val-required="The Activo field is required." id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="false">
                         }
+                        <input name="SelectedAgent.IsActive" type="hidden" value="@Model.SelectedAgent.IsActive">
                         <label for="SelectedAgent_IsActive">Activo</label>
                     </div>
                 </div>
@@ -108,7 +107,7 @@
             <br />
             <div class="row">
                 <div class="col-md-3">
-                    <a class="btn btn-sm btn-success">Modificar</a>
+                    <a class="btn btn-sm btn-success" onclick="pageController.onSubmit()">Modificar</a>
                 </div>
             </div>
         }
