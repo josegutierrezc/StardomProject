@@ -23,8 +23,6 @@ namespace AppsManager.DTO
             RuleFor(e => e.FirstName).NotNull().NotEmpty();
             RuleFor(e => e.LastName).NotNull().NotEmpty();
             RuleFor(e => e.Username).NotNull().NotEmpty();
-            RuleFor(e => e.Password).NotNull().NotEmpty();
-            RuleFor(e => e.IsActive).NotNull().NotEmpty();
         }
     }
 }

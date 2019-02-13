@@ -74,7 +74,17 @@ namespace BookingManager.Web.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Update(AgentsViewModel Model) {
-            return Json(new { Success = true });
+            string agencyNumber = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.AgencyNumberTagName);
+
+            UserDTO user = new UserDTO() {
+                IsActive = Model.SelectedAgent.IsActive,
+                Username = Model.SelectedAgent.Username,
+                FirstName = Model.SelectedAgent.Firstname,
+                LastName = Model.SelectedAgent.Lastname
+            };
+            bool updated = await Client.Instance.UpdateUser(agencyNumber, user);
+
+            return Json(new { Success = updated, ErrorDescription = string.Empty });
         }
     }
 }

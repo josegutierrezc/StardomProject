@@ -56,7 +56,7 @@ namespace Cars.Reports
                 agency = ageMan.GetByNumber(AgencyNumber);
 
                 //Load Payment Methods
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 PaymentMethodsManager payMan = new PaymentMethodsManager();
                 List<AgentSalesSummary> salesbyAgent = payMan.GetReportOfSalesByAgent(AgencyNumber, fromDate, toDate);
                 sales = new SortedDictionary<string, SortedDictionary<string, SaleAmounts>>();

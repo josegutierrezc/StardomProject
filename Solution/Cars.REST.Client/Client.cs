@@ -144,6 +144,23 @@ namespace Cars.REST.Client
                 return privileges;
             }
         }
+        public async Task<bool> UpdateUser(string AgencyNumber, UserDTO dto) {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                string url = "api/v1/agencies/" + AgencyNumber + "/users/" + dto.Username;
+                var jsonData = JsonConvert.SerializeObject(dto);
+                using (HttpContent content = new StringContent(jsonData))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    return response.IsSuccessStatusCode;
+                }
+            }
+        }
         #endregion
 
         #region Agencies

@@ -25,18 +25,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="checkbox m-r-xs">
                         @if (Model.SelectedAgent.IsActive)
                         {
-                            <input checked="checked" data-val="true" data-val-required="The Activo field is required." id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="true">
+                            <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="True" checked="checked" />
                         }
                         else
                         {
-                            <input data-val="false" data-val-required="The Activo field is required." id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="false">
+                            <input id="SelectedAgent_IsActive" name="SelectedAgent.IsActive" type="checkbox" value="False" />
                         }
-                        <input name="SelectedAgent.IsActive" type="hidden" value="@Model.SelectedAgent.IsActive">
-                        <label for="SelectedAgent_IsActive">Activo</label>
+                        <label for="SelectedAgent_IsActive">Este agente está habilitado para acceder al sistema.</label>
                     </div>
                 </div>
             </div>

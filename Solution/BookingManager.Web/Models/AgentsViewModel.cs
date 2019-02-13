@@ -19,7 +19,7 @@ namespace BookingManager.Web.Models
 
     public class AgentModel {
         [Required]
-        [Display(Name = "Activo")]
+        [Display(Name = "Puede este agente utilizar el sistema?")]
         public bool IsActive { get; set; }
 
         [Required]

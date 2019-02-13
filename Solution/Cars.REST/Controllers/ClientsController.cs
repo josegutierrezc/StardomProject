@@ -47,7 +47,7 @@ namespace Cars.REST.Controllers
                     return Request.CreateResponse(HttpStatusCode.BadRequest, result.Errors);
 
                 //Update CreatedBy
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 dto.CreatedByUserId = userMan.GetByUsername(dto.CreatedByUsername).Id;
 
                 ClientsManager cliMan = new ClientsManager();
@@ -87,7 +87,7 @@ namespace Cars.REST.Controllers
                 ClientExtension client = cliMan.GetById(agencynumber, id);
                 if (client == null) Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, "Client does not exists.");
 
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 dto.ModifiedByUserId = userMan.GetByUsername(dto.ModifiedByUsername).Id;
 
                 bool updated = cliMan.Update(agencynumber, Mapper.Map<ClientDTO, ClientExtension>(dto));
@@ -205,7 +205,7 @@ namespace Cars.REST.Controllers
 
                 CarReservationsManager resMan = new CarReservationsManager();
                 List<CarReservationExtension> reservations = resMan.GetByClientId(agencynumber, id);
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 foreach (CarReservationExtension r in reservations)
                 {
                     r.CreatedByUser = userMan.GetById(r.CreatedBy).Username;

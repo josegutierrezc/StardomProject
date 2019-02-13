@@ -126,7 +126,7 @@ namespace Cars.REST.Controllers
                 KeyValuePair<int, List<CarReservationExtension>> reservations = carMan.Get(agencynumber, type, searchfor, pagesize, pagenumber, filter);
 
                 //Update Total days, and user names
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 foreach (CarReservationExtension res in reservations.Value)
                 {
                     res.Days = res.ToDate.Subtract(res.FromDate).Days;
@@ -156,7 +156,7 @@ namespace Cars.REST.Controllers
                 if (!result.IsValid) return Request.CreateResponse(HttpStatusCode.BadRequest, result.Errors);
 
                 //Update UserId
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 dto.CreatedBy = userMan.GetByUsername(dto.CreatedByUser).Id;
 
                 //Add reservation
@@ -187,7 +187,7 @@ namespace Cars.REST.Controllers
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Reservation with Id " + id + " does not exists.");
 
                 //Update Total days, and user names
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 reservation.Days = reservation.ToDate.Subtract(reservation.FromDate).Days;
                 reservation.CreatedByUser = userMan.GetById(reservation.CreatedBy).Username;
                 reservation.ModifiedByUser = reservation.ModifiedBy == null ? string.Empty : userMan.GetById((int)reservation.ModifiedBy).Username;
@@ -218,7 +218,7 @@ namespace Cars.REST.Controllers
                     if (!result.IsValid) return Request.CreateResponse(HttpStatusCode.BadRequest, result.Errors);
 
                     //Get UserId
-                    UsersManager userMan = new UsersManager();
+                    UsersManager userMan = new UsersManager(DB);
                     dto.ModifiedBy = userMan.GetByUsername(dto.ModifiedByUser).Id;
                     if (dto.CancelledByUser != null && dto.CancelledByUser != string.Empty)
                         dto.CancelledBy = userMan.GetByUsername(dto.CancelledByUser).Id;
@@ -325,7 +325,7 @@ namespace Cars.REST.Controllers
                 if (reservation == null) Request.CreateResponse(HttpStatusCode.BadRequest, "Car Reservation does not exists.");
 
                 //Return Payments
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 CarReservationPaymentsManager payMan = new CarReservationPaymentsManager();
                 List<PaymentExtension> payments = payMan.Get(agencynumber, id);
                 foreach (PaymentExtension p in payments)
@@ -354,7 +354,7 @@ namespace Cars.REST.Controllers
                 if (reservation == null) Request.CreateResponse(HttpStatusCode.BadRequest, "Car Reservation does not exists.");
 
                 //Update userid
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 paymentdto.CreatedByUserId = userMan.GetByUsername(paymentdto.CreatedByUser).Id;
 
                 //Validate
@@ -452,7 +452,7 @@ namespace Cars.REST.Controllers
                 if (agency == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
 
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<List<UserAgencyHelper>, List<UserAgencyDTO>>(userMan.GetUsers(agencynumber)));
             }
         }
@@ -467,13 +467,36 @@ namespace Cars.REST.Controllers
                 if (agency == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
 
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 User user = userMan.GetByUsername(username);
 
                 if (user == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "User " + username + " does not exists.");
 
                 return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<User, UserDTO>(user));
+            }
+        }
+
+        [Route("api/v1/agencies/{agencynumber}/users/{username}")]
+        [HttpPost]
+        public HttpResponseMessage UserPost(string agencynumber, string username, [FromBody] UserDTO dto)
+        {
+            using (var DB = AppsManagerModel.ConnectToSqlServer())
+            {
+                AgenciesManager ageMan = new AgenciesManager(DB);
+                Agency agency = ageMan.GetByNumber(agencynumber);
+                if (agency == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
+
+                UserDTOValidator validator = new UserDTOValidator();
+                ValidationResult result = validator.Validate(dto);
+                if (!result.IsValid) return Request.CreateResponse(HttpStatusCode.BadRequest, result.Errors);
+
+                UsersManager userMan = new UsersManager(DB);
+                User user = Mapper.Map<UserDTO, User>(dto);
+                bool updated = userMan.Update(user);
+
+                return updated ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.BadRequest, "An error occurred trying to update this agent.");
             }
         }
 
@@ -487,7 +510,7 @@ namespace Cars.REST.Controllers
                 if (agency == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
 
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 User user = userMan.GetByUsername(username);
 
                 if (user == null)
@@ -517,9 +540,12 @@ namespace Cars.REST.Controllers
             if (username.ToUpper() != dto.Username.ToUpper()) return Request.CreateResponse(HttpStatusCode.BadRequest, "Username in URL does not match with Username in message body.");
 
             //Get User
-            UsersManager userMan = new UsersManager();
-            User user = userMan.GetByUsername(dto.Username);
-            if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
+            User user = null;
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                UsersManager userMan = new UsersManager(DB);
+                user = userMan.GetByUsername(dto.Username);
+                if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
+            }
 
             //Assign Privilege
             using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber)) {
@@ -535,11 +561,14 @@ namespace Cars.REST.Controllers
         {
             //Verify no privileges can be added to sysadmin account
             if (username.ToUpper() == "SYSADMIN") return Request.CreateResponse(HttpStatusCode.Forbidden, "No privileges can be removed from the System Administrator account.");
-            
+
             //Get User
-            UsersManager userMan = new UsersManager();
-            User user = userMan.GetByUsername(username);
-            if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
+            User user = null;
+            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
+                UsersManager userMan = new UsersManager(DB);
+                user = userMan.GetByUsername(username);
+                if (user == null) return Request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist.");
+            }
 
             //Assign Privilege
             using (var CarsDB = CarsModel.ConnectToSqlServer(agencynumber)) {
@@ -765,7 +794,7 @@ namespace Cars.REST.Controllers
                 if (agency == null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Agency " + agencynumber + " does not exists.");
 
-                UsersManager userMan = new UsersManager();
+                UsersManager userMan = new UsersManager(DB);
                 int userId = userMan.GetByUsername(ModifiedByUser).Id;
 
                 PriceConfigurationsManager priMan = new PriceConfigurationsManager();
@@ -828,7 +857,7 @@ namespace Cars.REST.Controllers
                     if (firstyear == 0 | secondyear == 0 | month == 0 | username == string.Empty)
                         return Request.CreateResponse(HttpStatusCode.BadRequest, "Parameters: firstyear,secondyear,month and username are required.");
 
-                    UsersManager userMan = new UsersManager();
+                    UsersManager userMan = new UsersManager(DB);
                     int userId = userMan.GetByUsername(username).Id;
 
                     CarReservationsManager carMan = new CarReservationsManager();

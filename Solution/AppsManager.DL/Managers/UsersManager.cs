@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace AppsManager.DL
 {
     public class UsersManager
     {
+        protected AppsManagerModel DB;
+        public UsersManager(AppsManagerModel DB) {
+            this.DB = DB;
+        }
         public List<User> GetAll() {
             using (var DB = AppsManagerModel.ConnectToSqlServer())
                 return DB.Users.ToList();
@@ -54,39 +59,36 @@ namespace AppsManager.DL
             }
         }
         public bool Add(User Entity) {
-            using (var DB = AppsManagerModel.ConnectToSqlServer()) {
-                var query = DB.Users.Where(e => e.Username.ToUpper() == Entity.Username.ToUpper());
-                if (query.Count() != 0) return false;
+            var query = DB.Users.Where(e => e.Username.ToUpper() == Entity.Username.ToUpper());
+            if (query.Count() != 0) return false;
 
-                DB.Users.Add(Entity);
-                DB.SaveChanges();
-                return true;
-            }
+            DB.Users.Add(Entity);
+            DB.SaveChanges();
+            return true;
         }
         public bool Update(User Entity) {
-            using (var DB = AppsManagerModel.ConnectToSqlServer())
-            {
-                User user = DB.Users.Where(e => e.Username.ToUpper() == Entity.Username.ToUpper()).FirstOrDefault();
-                if (user == null) return false;
+            User user = DB.Users.Where(e => e.Username.ToUpper() == Entity.Username.ToUpper()).FirstOrDefault();
+            if (user == null) return false;
 
-                user.FirstName = Entity.FirstName;
-                user.LastName = Entity.LastName;
-                user.IsActive = Entity.IsActive;
-                DB.SaveChanges();
+            MD5 md5Hash = MD5.Create();
+            user.FirstName = Entity.FirstName;
+            user.LastName = Entity.LastName;
+            user.IsActive = Entity.IsActive;
 
-                return true;
-            }
+            if (Entity.Password != null && Entity.Password != string.Empty)
+                user.Password = Encrypt(md5Hash, Entity.Password);
+
+            DB.SaveChanges();
+
+            return true;
         }
         public bool Delete(string Username) {
-            using (var DB = AppsManagerModel.ConnectToSqlServer())
-            {
-                User user = DB.Users.Where(e => e.Username.ToUpper() == Username.ToUpper()).FirstOrDefault();
-                if (user == null) return false;
+            User user = DB.Users.Where(e => e.Username.ToUpper() == Username.ToUpper()).FirstOrDefault();
+            if (user == null) return false;
 
-                DB.Users.Remove(user);
-                DB.SaveChanges();
-                return true;
-            }
+            DB.Users.Remove(user);
+            DB.SaveChanges();
+            return true;
         }
         public bool AssignAgency(UserAgencyHelper Entity) {
             using (var DB = AppsManagerModel.ConnectToSqlServer()) {
@@ -129,5 +131,27 @@ namespace AppsManager.DL
                 return true;
             }
         }
+
+        #region Helpers
+        public static string Encrypt(MD5 md5Hash, string plainText)
+        {
+            // Convert the input string to a byte array and compute the hash.
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(plainText));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
+        }
+        #endregion
     }
 }

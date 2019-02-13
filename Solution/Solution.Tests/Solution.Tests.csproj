@@ -80,7 +80,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppsManager\AppsManager.Tests.cs" />
+    <Compile Include="AppsManager\AgenciesManager.Tests.cs" />
+    <Compile Include="AppsManager\UsersManager.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
