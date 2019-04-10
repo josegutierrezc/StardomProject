@@ -47,7 +47,7 @@ namespace Cars.DL
                             from subprov in prov.DefaultIfEmpty()
                             join rcp in DB.RentCarPlaces on cr.RentCarPlaceId equals rcp.Id into ren
                             from subrent in ren.DefaultIfEmpty()
-                            where cr.ToDate >= DateTime.Now
+                            where cr.ToDate >= DateTime.Today
                             select new CarReservationExtension
                             {
                                 Id = cr.Id,
