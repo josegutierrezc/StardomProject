@@ -11,12 +11,12 @@ using Microsoft.Reporting.WinForms;
 
 namespace Cars.Reports
 {
-    public class CarReservationStatusReportModel : ReportModel
+    public class AccountingLimitedReportModel : ReportModel
     {
         #region Constructor
-        public CarReservationStatusReportModel() {
-            Name = "Estado de reservas";
-            Url = "carreservationstatus";
+        public AccountingLimitedReportModel() {
+            Name = "Contabilidad Limitada";
+            Url = "accountinglimited";
         }
         #endregion
 
@@ -24,7 +24,10 @@ namespace Cars.Reports
         private Agency agency;
         private DateTime fromDate;
         private DateTime toDate;
-        private string statusname;
+        private int touroperatorid;
+        private string touroperatorname;
+        private int paymentstatusid;
+        private string paymentstatusname;
         private int totalReservations;
         private string printedby;
         List<CarReservationExtension> reservations;
@@ -41,14 +44,16 @@ namespace Cars.Reports
             //param1name=param1value;param2ame=param2value
             fromDate = DateTime.Today;
             toDate = DateTime.Today;
-            statusname = string.Empty;
+            paymentstatusid = -1;
+            touroperatorid = -1;
             string[] paramSet = Parameters.Split(';');
             foreach (string param in paramSet)
             {
                 string[] paramDict = param.Split('=');
                 if (paramDict[0].ToUpper() == "FROMDATE") fromDate = Convert.ToDateTime(paramDict[1]);
                 if (paramDict[0].ToUpper() == "TODATE") toDate = Convert.ToDateTime(paramDict[1]);
-                if (paramDict[0].ToUpper() == "STATUS") statusname = paramDict[1];
+                if (paramDict[0].ToUpper() == "TOUROPERATORID" & paramDict[1] != "-1") touroperatorid = Convert.ToInt32(paramDict[1]);
+                if (paramDict[0].ToUpper() == "PAYMENTSTATUSID" & paramDict[1] != "-1") paymentstatusid = Convert.ToInt32(paramDict[1]);
                 if (paramDict[0].ToUpper() == "PRINTEDBY") printedby = paramDict[1];
             }
 
@@ -62,7 +67,7 @@ namespace Cars.Reports
 
                 //Load AccountingReport
                 CarReservationsManager carsMan = new CarReservationsManager();
-                KeyValuePair<int, List<CarReservationExtension>> result = carsMan.GetCarReservationStatusReport(AgencyNumber, fromDate, toDate, statusname);
+                KeyValuePair<int, List<CarReservationExtension>> result = carsMan.GetAccountingReport(AgencyNumber, fromDate, toDate, touroperatorid, paymentstatusid);
                 totalReservations = result.Key;
                 reservations = result.Value;
 
@@ -76,6 +81,17 @@ namespace Cars.Reports
                         if (p.ConceptId == 2) { totaltip += p.Amount; }
                     tipDictionary.Add(r.Id, totaltip);
                 }
+
+                //Define TourOperator Name if apply
+                touroperatorname = "Todos incluidos";
+                if (touroperatorid != -1)
+                {
+                    TourOperatorsManager tourMan = new TourOperatorsManager();
+                    touroperatorname = tourMan.GetById(AgencyNumber, touroperatorid).Name;
+                }
+
+                //Define PaymentStatus Name
+                paymentstatusname = paymentstatusid == -1 ? CarReservationsManager.PaymentStatusAllName + " incluidos" : CarReservationsManager.PaymentStatusNames[paymentstatusid];
             }
         }
         protected override object Pdf(bool IsImplemented)
@@ -97,6 +113,8 @@ namespace Cars.Reports
                 fromDate.ToString("dd/MM/yyyy"),
                 toDate.ToString("dd/MM/yyyy"),
                 totalReservations,
+                touroperatorname,
+                paymentstatusname,
                 agency.LogoFilename,
                 printedby
             });
