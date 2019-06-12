@@ -29,6 +29,7 @@ namespace BookingManager.Web.Controllers
             model.Formats = new SelectList(GetReportFormats(), "Key", "Value");
             model.TourOperators = new SelectList(await GetAllTourOperators(), "Id", "Name");
             model.PaymentsStatuses = new SelectList(await GetAllPaymentStatuses(), "Id", "Name");
+            model.CarReservationStatuses = GetAllCarReservationStatuses();
 
             model.SelectedReport = ReportId == null ? null : reports[(int)ReportId - 1];
             return PartialView("_ReportFilters", model);
@@ -46,7 +47,7 @@ namespace BookingManager.Web.Controllers
             return Json(new { Success = true });
         }
 
-        public async Task<ActionResult> DownloadReport(int ReportId, string Format, string FromDate, string ToDate, int? TourOperatorId, int? PaymentStatusId)
+        public async Task<ActionResult> DownloadReport(int ReportId, string Format, string FromDate, string ToDate, int? TourOperatorId, int? PaymentStatusId, string CarReservationStatus)
         {
             string agencyNumber = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.AgencyNumberTagName);
             string printedBy = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.UserFullnameTagNam);
@@ -63,8 +64,10 @@ namespace BookingManager.Web.Controllers
                 voucher = await Client.Instance.GetPaymentTypesReport(agencyNumber, Format, Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), printedBy);
             else if (ReportId == 4)
                 voucher = await Client.Instance.GetSalesByAgentReport(agencyNumber, Format, Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), printedBy);
-            else
+            else if (ReportId == 5)
                 voucher = await Client.Instance.GetReservationsListReport(agencyNumber, Format, Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), printedBy);
+            else
+                voucher = await Client.Instance.GetCarReservationStatusReport(agencyNumber, Format, Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CarReservationStatus, printedBy);
 
             if (Format.ToLower() == "pdf") return File(voucher, System.Net.Mime.MediaTypeNames.Application.Pdf);
             return File(voucher, System.Net.Mime.MediaTypeNames.Application.Octet, "Reporte.xls");
@@ -79,7 +82,8 @@ namespace BookingManager.Web.Controllers
                     IsFromDateEnabled = true,
                     IsToDateEnabled = true,
                     IsTourOperatorEnabled = true,
-                    IsPaymentStatusEnabled = true
+                    IsPaymentStatusEnabled = true,
+                    IsAllStatusesEnabled = false
                 },
                 new ReportViewModel() {
                     ReportId = 2,
@@ -87,7 +91,8 @@ namespace BookingManager.Web.Controllers
                     IsFromDateEnabled = true,
                     IsToDateEnabled = true,
                     IsTourOperatorEnabled = true,
-                    IsPaymentStatusEnabled = true
+                    IsPaymentStatusEnabled = true,
+                    IsAllStatusesEnabled = false
                 },
                 new ReportViewModel() {
                     ReportId = 3,
@@ -96,6 +101,7 @@ namespace BookingManager.Web.Controllers
                     IsToDateEnabled = true,
                     IsTourOperatorEnabled = false,
                     IsPaymentStatusEnabled = false,
+                    IsAllStatusesEnabled = false
                 },
                new ReportViewModel() {
                    ReportId = 4,
@@ -104,6 +110,7 @@ namespace BookingManager.Web.Controllers
                    IsToDateEnabled = true,
                    IsTourOperatorEnabled = false,
                    IsPaymentStatusEnabled = false,
+                   IsAllStatusesEnabled = false
                },
                new ReportViewModel() {
                    ReportId = 5,
@@ -111,7 +118,17 @@ namespace BookingManager.Web.Controllers
                    IsFromDateEnabled = true,
                    IsToDateEnabled = true,
                    IsTourOperatorEnabled = false,
-                   IsPaymentStatusEnabled = false 
+                   IsPaymentStatusEnabled = false,
+                   IsAllStatusesEnabled = false
+               },
+               new ReportViewModel() {
+                   ReportId = 6,
+                   ReportName = "Estado de reservas de auto",
+                   IsFromDateEnabled = true,
+                   IsToDateEnabled = true,
+                   IsTourOperatorEnabled = false,
+                   IsPaymentStatusEnabled = false,
+                   IsAllStatusesEnabled = true
                }
             };
             return reports;
@@ -130,6 +147,17 @@ namespace BookingManager.Web.Controllers
         {
             string agencyNumber = ApplicationHelper.Instance.GetTagValueFromIdentity(User.Identity, ApplicationHelper.AgencyNumberTagName);
             return await Client.Instance.GetPaymentStatuses(agencyNumber);
+        }
+        public SelectList GetAllCarReservationStatuses() {
+            return new SelectList(new SelectListItem[] {
+                new SelectListItem { Text = "Confirmadas", Value = "CONFIRMED" },
+                new SelectListItem { Text = "No confirmadas", Value = "UNCONFIRMED" },
+                new SelectListItem { Text = "Canceladas", Value = "CANCELLED" },
+                new SelectListItem { Text = "Pagadas", Value = "FULLYPAID" },
+                new SelectListItem { Text = "Parcialmente pagadas", Value = "PARTIALLYPAID" },
+                new SelectListItem { Text = "No pagadas", Value = "UNPAID" },
+                new SelectListItem { Text = "Pendientes a reembolso", Value = "PENDINGREFUND" }
+            }, "Value", "Text");
         }
         #endregion
     }

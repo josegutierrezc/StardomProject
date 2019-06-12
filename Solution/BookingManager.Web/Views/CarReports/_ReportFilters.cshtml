@@ -30,6 +30,7 @@
                         @Html.HiddenFor(m => m.SelectedReport.IsToDateEnabled)
                         @Html.HiddenFor(m => m.SelectedReport.IsTourOperatorEnabled)
                         @Html.HiddenFor(m => m.SelectedReport.IsPaymentStatusEnabled)
+                        @Html.HiddenFor(m => m.SelectedReport.IsAllStatusesEnabled)
                         <div class="row">
                             <div class="col-sm-3">
                                 @Html.LabelFor(m => m.SelectedReport.Format)
@@ -68,6 +69,13 @@
                                 <div class="col-sm-3">
                                     @Html.LabelFor(m => m.SelectedReport.PaymentStatusId)
                                     @Html.DropDownListFor(m => m.SelectedReport.PaymentStatusId, Model.PaymentsStatuses, "Todos", new { @class = "form-control" })
+                                </div>
+                            }
+                            @if (Model.SelectedReport.IsAllStatusesEnabled)
+                            {
+                                <div class="col-sm-3">
+                                    @Html.LabelFor(m => m.SelectedReport.CarReservationStatus)
+                                    @Html.DropDownListFor(m => m.SelectedReport.CarReservationStatus, Model.CarReservationStatuses, "Todos", new { @class = "form-control" })
                                 </div>
                             }
                         </div>

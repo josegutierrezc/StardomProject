@@ -505,5 +505,68 @@ namespace Cars.DL
                 return query.OrderBy(e => e.FromDate).ToList();
             }
         }
+        public KeyValuePair<int, List<CarReservationExtension>> GetCarReservationStatusReport(string AgencyNumber, DateTime FromDate, DateTime ToDate, string StatusName)
+        {
+            using (var DB = CarsModel.ConnectToSqlServer(AgencyNumber))
+            {
+                var query = from cr in DB.CarReservations
+                            join c in DB.Clients on cr.ClientId equals c.Id
+                            join cp in DB.CarProviders on cr.CarProviderId equals cp.Id into cproviders
+                            from subpro in cproviders.DefaultIfEmpty()
+                            join cc in DB.CarCategories on cr.CarCategoryId equals cc.Id into ccat
+                            from subcat in ccat.DefaultIfEmpty()
+                            join to in DB.TourOperators on cr.TourOperatorId equals to.Id into tope
+                            from subtour in tope.DefaultIfEmpty()
+                            join p in DB.Provinces on cr.ProvinceId equals p.Id into prov
+                            from subprov in prov.DefaultIfEmpty()
+                            join rcp in DB.RentCarPlaces on cr.RentCarPlaceId equals rcp.Id into ren
+                            from subrent in ren.DefaultIfEmpty()
+                            where cr.FromDate >= FromDate & cr.FromDate <= ToDate & cr.CancelledOn == null
+                            select new CarReservationExtension
+                            {
+                                Id = cr.Id,
+                                CreatedBy = cr.CreatedBy,
+                                CreatedByUser = string.Empty,
+                                CreatedOn = cr.CreatedOn,
+                                ModifiedBy = cr.ModifiedBy,
+                                ModifiedByUser = string.Empty,
+                                ModifiedOn = cr.ModifiedOn,
+                                CancelledOn = cr.CancelledOn,
+                                CancelledBy = cr.CancelledBy,
+                                CancelledByUser = string.Empty,
+                                PaymentStatusId = cr.PaymentStatusId,
+                                ClientId = cr.ClientId,
+                                ClientFirstname = c.FirstName,
+                                ClientLastname = c.LastName,
+                                ClientPhone = c.Phone,
+                                ClientEmail = c.Email,
+                                TroubledClient = c.Troubled,
+                                ReservationNumber = cr.ReservationNumber,
+                                FlightNumber = cr.FlightNumber,
+                                FromDate = cr.FromDate,
+                                ToDate = cr.ToDate,
+                                CarProviderId = cr.CarProviderId,
+                                CarProviderName = subpro.Name,
+                                CarCategoryId = cr.CarCategoryId,
+                                CarCategoryName = subcat.Name,
+                                TourOperatorId = cr.TourOperatorId,
+                                TourOperatorName = subtour.Name,
+                                ProvinceId = cr.ProvinceId,
+                                ProvinceName = subprov.Name,
+                                RentCarPlaceId = cr.RentCarPlaceId,
+                                RentCarPlaceName = subrent.Name,
+                                HasInsurance = cr.HasInsurance,
+                                CostPrice = cr.CostPrice,
+                                SalePrice = cr.SalePrice,
+                                InsuranceCost = cr.InsuranceCost,
+                                Discount = cr.Discount,
+                                Note = cr.Note
+                            };
+                //if (StatusName == FilterConfirmed) query = query.Where(e => e. query.Where(e => e.TourOperatorId == TourOperatorId);
+                //if (PaymentStatusId != PaymentStatusAll) query = query.Where(e => e.PaymentStatusId == PaymentStatusId);
+                int totalRecords = query.Count();
+                return new KeyValuePair<int, List<CarReservationExtension>>(totalRecords, query.OrderBy(e => e.FromDate).ToList());
+            }
+        }
     }
 }

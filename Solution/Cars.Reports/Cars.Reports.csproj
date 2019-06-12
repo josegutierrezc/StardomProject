@@ -96,6 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Voucher.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Models\CarReservationStatusReportModel.cs" />
     <Compile Include="Models\AccountingLimitedReportModel.cs" />
     <Compile Include="Models\CarReservationsModel.cs" />
     <Compile Include="Models\SalesByAgentReportModel.cs" />

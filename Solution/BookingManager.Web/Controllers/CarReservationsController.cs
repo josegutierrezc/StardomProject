@@ -163,7 +163,7 @@ namespace BookingManager.Web.Controllers
 
             //Get Price Configuration
             var ci = new System.Globalization.CultureInfo("es-ES");
-            DateTime fromDate = DateTime.Parse(Model.FromDate, ci);
+            DateTime fromDate = DateTime.Parse(Model.FromDate + " " + Model.FromHour, ci);
             DateTime toDate = DateTime.Parse(Model.ToDate, ci);
             var priceConfiguration = await Client.Instance.GetPriceConfiguration(agencyNumber, (int)Model.CarCategoryId, (int)Model.TourOperatorId, fromDate.ToShortDateString(), toDate.ToShortDateString());
 

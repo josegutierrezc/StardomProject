@@ -45,7 +45,8 @@ PageController.prototype.onDownloadReport = function () {
                 var toDate = $('#SelectedReport_ToDate').val();
                 var touroperatorid = $('#SelectedReport_TourOperatorId').val();
                 var paymentstatusid = $('#SelectedReport_PaymentStatusId').val();
-                window.open("CarReports/DownloadReport?ReportId=" + reportId + "&Format=" + format + "&FromDate=" + fromDate + "&ToDate=" + toDate + "&TourOperatorId=" + touroperatorid + "&PaymentStatusId=" + paymentstatusid, "_blank");
+                var reservationStatus = $('#SelectedReport_CarReservationStatus').val();
+                window.open("CarReports/DownloadReport?ReportId=" + reportId + "&Format=" + format + "&FromDate=" + fromDate + "&ToDate=" + toDate + "&TourOperatorId=" + touroperatorid + "&PaymentStatusId=" + paymentstatusid + "&CarReservationStatus=" + reservationStatus, "_blank");
             }
             else {
                 toastr.error(result.ErrorDescription, "Oops!");

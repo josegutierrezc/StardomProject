@@ -925,6 +925,24 @@ namespace Cars.REST.Client
             }
             return new byte[] { };
         }
+        public async Task<byte[]> GetCarReservationStatusReport(string AgencyNumber, string Format, DateTime FromDate, DateTime ToDate, string CarReservationStatus, string PrintedBy)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                string url = "api/v1/agencies/" + AgencyNumber + "/reports/carreservationstatus?format=" + Format + "&parameters=fromdate=" + FromDate.ToShortDateString() + ";todate=" + ToDate.ToShortDateString() + ";status=" + CarReservationStatus + ";printedby=" + PrintedBy;
+                HttpResponseMessage response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<byte[]>(jsonData);
+                }
+            }
+            return new byte[] { };
+        }
         #endregion
 
         #region Seasons

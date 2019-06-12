@@ -13,6 +13,7 @@ namespace BookingManager.Web.Models
         public SelectList Formats { get; set; }
         public SelectList TourOperators { get; set; }
         public SelectList PaymentsStatuses { get; set; }
+        public SelectList CarReservationStatuses { get; set; }
         public int SelectedReportId { get; set; }
         public ReportViewModel SelectedReport { get; set; }
     }
@@ -24,6 +25,7 @@ namespace BookingManager.Web.Models
         public bool IsToDateEnabled { get; set; }
         public bool IsTourOperatorEnabled { get; set; }
         public bool IsPaymentStatusEnabled { get; set; }
+        public bool IsAllStatusesEnabled { get; set; }
 
         [Display(Name = "Formato de exportación:")]
         public string Format { get; set; }
@@ -35,5 +37,7 @@ namespace BookingManager.Web.Models
         public int TourOperatorId { get; set; }
         [Display(Name = "Estado de los pagos:")]
         public int PaymentStatusId { get; set; }
+        [Display(Name = "Estado de la reserva")]
+        public string CarReservationStatus { get; set; }
     }
 }

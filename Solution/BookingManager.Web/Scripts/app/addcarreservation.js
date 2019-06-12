@@ -64,7 +64,11 @@ function updatePaymentBalance() {
 };
 
 PageController.prototype.onDiscountChange = function () {
-    pageController.updatePrice();
+    var discount = $('#Discount').val();
+    var currentsaleprice = $('#SalePrice').val();
+    var finalPrice = parseFloat(currentsaleprice) - parseFloat(discount);
+    $('#finalPrice').html("$" + finalPrice.toFixed(2));
+    //pageController.updatePrice();
 };
 
 PageController.prototype.onProvinceChanged = function () {
