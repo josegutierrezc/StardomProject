@@ -83,6 +83,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CarReservations.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSets\CarReservationStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CarReservationStatus.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSets\PaymentReceipt.Designer.cs">
       <DependentUpon>PaymentReceipt.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -105,6 +110,7 @@
     </Compile>
     <Compile Include="Models\AccountingLimitedReportModel.cs" />
     <Compile Include="Models\CarReservationsModel.cs" />
+    <Compile Include="Models\CarReservationStatusReportModel.cs" />
     <Compile Include="Models\SalesByAgentReportModel.cs" />
     <Compile Include="Models\PaymentTypesReportModel.cs" />
     <Compile Include="Models\AccountingReportModel.cs" />
@@ -136,6 +142,17 @@
     </None>
     <None Include="DataSets\CarReservations.xss">
       <DependentUpon>CarReservations.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\CarReservationStatus.xsc">
+      <DependentUpon>CarReservationStatus.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\CarReservationStatus.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CarReservationStatus.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSets\CarReservationStatus.xss">
+      <DependentUpon>CarReservationStatus.xsd</DependentUpon>
     </None>
     <None Include="DataSets\PaymentReceipt.xsc">
       <DependentUpon>PaymentReceipt.xsd</DependentUpon>
@@ -219,6 +236,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Reports\CarReservations.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Reports\CarReservationStatus.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

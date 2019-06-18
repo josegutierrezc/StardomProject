@@ -23,7 +23,7 @@ namespace Cars.Reports
         #endregion
 
         #region Static Members
-        public static ReportModel[] All = new ReportModel[] { new VoucherModel(), new PaymentReceiptModel(), new AccountingReportModel(), new AccountingLimitedReportModel(), new PaymentTypesReportModel(), new SalesByAgentReportModel(), new CarReservationsModel() };
+        public static ReportModel[] All = new ReportModel[] { new VoucherModel(), new PaymentReceiptModel(), new AccountingReportModel(), new AccountingLimitedReportModel(), new PaymentTypesReportModel(), new SalesByAgentReportModel(), new CarReservationsModel(), new CarReservationStatusReportModel() };
         #endregion
 
         #region Constructors
